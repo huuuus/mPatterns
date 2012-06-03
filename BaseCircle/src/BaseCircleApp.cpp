@@ -45,7 +45,7 @@ void BaseCircleApp::setup()
 	CirclesNegative.push_back(CIRCLE_MGR.spawnChildOnCircleAxis(pC, 2, -D_CENTER, pC->mRadius));
 
 	//positionAlongAxis
-	std::vector<CirclePtr>::iterator it;
+/*	std::vector<CirclePtr>::iterator it;
 	for (it=CirclesPositive.begin();it!=CirclesPositive.end();++it) 
 	{
 		CirclePtr pCircle = *it; //CirclesPositive.begin();
@@ -53,7 +53,7 @@ void BaseCircleApp::setup()
 			pCircle->addAxis(i*M_PI/6.f);
 			CIRCLE_MGR.spawnChildOnCircleAxis(pCircle, i, D_CENTER, Rand::randFloat(pC->mRadius/2.f, pC->mRadius/4.f));
 		}
-	}
+	}*/
 }
 
 void BaseCircleApp::mouseDown( MouseEvent event )

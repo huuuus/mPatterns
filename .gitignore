@@ -5,6 +5,7 @@ BaseCircle/vc10/ipch/
 *.bin
 *.pch
 *.sdf
+*.opensdf
 *.suo
 *.vcxproj.user
 *.vcxproj.filters

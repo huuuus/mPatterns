@@ -10,12 +10,30 @@ const int CIRCLE_DEFAULT_STROKE = 4;
 //---------------------------------------------------------------------------
 class Axis;
 class Circle;
+class Style;
+
 typedef boost::shared_ptr<Circle> CirclePtr;
+typedef boost::shared_ptr<Axis> AxisPtr;
+typedef boost::shared_ptr<Style> StylePtr;
 
 enum NODE_TYPE {
 	NT_ROOT,
 	NT_CIRCLE,
 	NT_AXIS
+};
+
+/*enum FX_STYLE_FLAGS {
+	GLOW_ADDITIVE,
+};
+*/
+class Style
+{
+public:
+	Style() {
+	};
+
+	Color mMainColor;
+	Color mSecondColor;
 };
 
 template<class CPos>
@@ -52,6 +70,7 @@ public:
 	Root() : Node<Vec2f>(Vec2f(0,0), NULL) {};
 	virtual void draw() const {};
 	virtual enum NODE_TYPE getType() {return NT_ROOT;};
+	virtual Style* getStyle() const {return 0;};
 };
 
 typedef boost::shared_ptr<Node<Vec2f> > RootPtr;
@@ -62,9 +81,9 @@ public:
 	CircleMngr() {};
 
 	static CircleMngr& instance() {static CircleMngr inst; return inst;};
-	static CirclePtr createCircle(Vec2f pos, Color c, float r, NodePtr pParent = mpRoot);	
+	static CirclePtr createCircle(Vec2f pos, Color c, float r, NodePtr pParent = mpRoot, Style* s=0);
 	
-	static CirclePtr spawnChildOnCircleAxis(CirclePtr pCircle, unsigned int axis, float distInRadiusUnits, float radius);
+	static CirclePtr spawnChildOnCircleAxis(CirclePtr pCircle, unsigned int axis, float distInRadiusUnits, float radius, Style* s=0);
 
 	static RootPtr mpRoot;
 
@@ -73,7 +92,20 @@ public:
 };
 
 //---------------------------------------------------------------------------
-class Circle : public Node<Vec2f> {
+class hasStyle {
+public:
+	hasStyle() {
+		mStyle = 0;
+	};
+
+	Style* mStyle;	
+
+	Style* getStyle() const {return mStyle;};
+	void setStyle(Style* s) {mStyle=s;};
+};
+
+//---------------------------------------------------------------------------
+class Circle : public Node<Vec2f>, public hasStyle {
 public:
 	Circle(Vec2f pos, Color c, float r, NodeConstPtr pParent);
 
@@ -81,7 +113,7 @@ public:
 	Color mColor;
 
 	virtual void draw() const;
-	void addAxis(float angle);
+	void addAxis(float angle, Style* s=0);
 	void setAxis(const Axis* pAxis);
 
 	void positionAlongAxis(float dist);
@@ -94,7 +126,7 @@ public:
 };
 
 //---------------------------------------------------------------------------
-class Axis : public Node<Vec2f> {
+class Axis : public Node<Vec2f>, public hasStyle {
 public:
 	Axis(Vec2f pos, float angle, NodeConstPtr pParent) : 
 		Node(pos, pParent)
@@ -103,7 +135,12 @@ public:
 	};
 
 	virtual void draw() const {
-		gl::color( Color(64/255.f,64/255.f,255/255.f) );
+		if (getStyle())
+			gl::color( getStyle()->mMainColor );
+		else
+			gl::color( Color(255,0,0) );
+
+		//gl::color( Color(64/255.f,64/255.f,255/255.f) );
 //		glLineWidth( 1.f );
 		const float LONG_DIST = 5000.f;
 		gl::drawLine(	mpParent->mPosWorld - mDir*LONG_DIST, 
@@ -113,4 +150,6 @@ public:
 
 	Vec2f mDir;
 	virtual enum NODE_TYPE getType() {return NT_AXIS;};
+
+	
 };

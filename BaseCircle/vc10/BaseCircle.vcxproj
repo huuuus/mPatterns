@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\Circle.h" />
+    <ClInclude Include="..\src\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

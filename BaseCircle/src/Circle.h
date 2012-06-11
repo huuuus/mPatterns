@@ -5,16 +5,19 @@
 #define CIRCLE_MGR CircleMngr::instance()
 
 //---------------------------------------------------------------------------
-const int CIRCLE_DEFAULT_STROKE = 4;
+const int CIRCLE_DEFAULT_STROKE = 16;
 
 //---------------------------------------------------------------------------
+
+namespace mPatterns {
+    
 class Axis;
 class Circle;
-class Style;
+class PrimitiveStyle;
 
 typedef boost::shared_ptr<Circle> CirclePtr;
 typedef boost::shared_ptr<Axis> AxisPtr;
-typedef boost::shared_ptr<Style> StylePtr;
+typedef boost::shared_ptr<PrimitiveStyle> StylePtr;
 
 enum NODE_TYPE {
 	NT_ROOT,
@@ -26,14 +29,17 @@ enum NODE_TYPE {
 	GLOW_ADDITIVE,
 };
 */
-class Style
+class PrimitiveStyle
 {
 public:
-	Style() {
+	PrimitiveStyle() {
+        mStroke = CIRCLE_DEFAULT_STROKE;
 	};
 
-	Color mMainColor;
-	Color mSecondColor;
+	ColorAf mMainColor;
+	ColorAf mSecondColor;
+    
+    float mStroke; //CIRCLE_DEFAULT_STROKE
 };
 
 template<class CPos>
@@ -70,7 +76,7 @@ public:
 	Root() : Node<Vec2f>(Vec2f(0,0), NULL) {};
 	virtual void draw() const {};
 	virtual enum NODE_TYPE getType() {return NT_ROOT;};
-	virtual Style* getStyle() const {return 0;};
+	virtual PrimitiveStyle* getStyle() const {return 0;};
 };
 
 typedef boost::shared_ptr<Node<Vec2f> > RootPtr;
@@ -81,9 +87,9 @@ public:
 	CircleMngr() {};
 
 	static CircleMngr& instance() {static CircleMngr inst; return inst;};
-	static CirclePtr createCircle(Vec2f pos, Color c, float r, NodePtr pParent = mpRoot, Style* s=0);
+	static CirclePtr createCircle(Vec2f pos, Color c, float r, NodePtr pParent = mpRoot, PrimitiveStyle* s=0);
 	
-	static CirclePtr spawnChildOnCircleAxis(CirclePtr pCircle, unsigned int axis, float distInRadiusUnits, float radius, Style* s=0);
+	static CirclePtr spawnChildOnCircleAxis(CirclePtr pCircle, unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s=0);
 
 	static RootPtr mpRoot;
 
@@ -98,10 +104,10 @@ public:
 		mStyle = 0;
 	};
 
-	Style* mStyle;	
+	PrimitiveStyle* mStyle;	
 
-	Style* getStyle() const {return mStyle;};
-	void setStyle(Style* s) {mStyle=s;};
+	PrimitiveStyle* getStyle() const {return mStyle;};
+	void setStyle(PrimitiveStyle* s) {mStyle=s;};
 };
 
 //---------------------------------------------------------------------------
@@ -113,7 +119,7 @@ public:
 	Color mColor;
 
 	virtual void draw() const;
-	void addAxis(float angle, Style* s=0);
+	void addAxis(float angle, PrimitiveStyle* s=0);
 	void setAxis(const Axis* pAxis);
 
 	void positionAlongAxis(float dist);
@@ -153,3 +159,5 @@ public:
 
 	
 };
+
+}

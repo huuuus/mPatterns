@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Circle.h"
 
+using namespace mPatterns;
+
 Circle::Circle(Vec2f pos, Color c, float r, NodeConstPtr pParent) :
 	Node(pos, pParent)	
 {
@@ -12,23 +14,23 @@ Circle::Circle(Vec2f pos, Color c, float r, NodeConstPtr pParent) :
 
 void Circle::draw() const {
 	if (mStyle)
-		gl::color( 1,0,0,0.1f/*mStyle->mMainColor*/ );
+		gl::color( mStyle->mMainColor );
 	else
-		gl::color( Color(255,255,255) );
+		gl::color( ColorA(255,255,255,255) );
 
-	glLineWidth( CIRCLE_DEFAULT_STROKE );
+	glLineWidth( mStyle->mStroke );
 		gl::drawStrokedCircle( mPosWorld, mRadius );
 	glLineWidth( 1.0f );
 };
 
-void Circle::addAxis(float angle, Style* s) {
+void Circle::addAxis(float angle, PrimitiveStyle* s) {
 	AxisPtr a(new Axis(mPos, angle, this));
 	a->setStyle(s);
 	mAxises.push_back(a.get());
 	mChilds.push_back(a);
 };
 
-CirclePtr CircleMngr::spawnChildOnCircleAxis(CirclePtr pCircle, unsigned int axis, float distInRadiusUnits, float radius, Style* s) {
+CirclePtr CircleMngr::spawnChildOnCircleAxis(CirclePtr pCircle, unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s) {
 	assert(axis<pCircle->mAxises.size());		
 	Vec2f dir = pCircle->mAxises[axis]->mDir;
 	CirclePtr pC = CIRCLE_MGR.createCircle( dir * distInRadiusUnits * pCircle->mRadius, 
@@ -50,7 +52,7 @@ void Circle::positionAlongAxis(float dist) {
 	mPos = mpAxis->mDir*dist;
 }
 
-CirclePtr CircleMngr::createCircle(Vec2f pos, Color c, float r, NodePtr pParent, Style* s) 
+CirclePtr CircleMngr::createCircle(Vec2f pos, Color c, float r, NodePtr pParent, PrimitiveStyle* s) 
 {
 	CirclePtr pCircle(new Circle(pos,c,r,pParent.get()));
 	pCircle->setStyle(s);

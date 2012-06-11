@@ -11,3 +11,5 @@ BaseCircle/vc10/ipch/
 *.vcxproj.filters
 *.tlog
 *.log
+.DS_Store
+*.xc*

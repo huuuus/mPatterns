@@ -2,6 +2,7 @@
 #include "circle.h"
 #include "cinder/params/Params.h"
 
+using namespace mPatterns;
 
 class BaseCircleApp : public AppBasic {
   public:
@@ -33,7 +34,7 @@ void BaseCircleApp::prepareSettings( Settings *settings )
 	mParams = params::InterfaceGl( "MCircles", Vec2i( 0, 0 ) );
 //	mParams.addSeparator();
 
-	mBgColor.set(cinder::ColorModel::CM_RGB, Vec3f(0.5f, 0.5f, 0.5f));
+	mBgColor.set(cinder::CM_RGB, Vec3f(0.f, 0.f, 0.f));
 	mParams.addParam( "bg", &mBgColor, "" );
 
 	mDistFromCenter = 64.f;
@@ -46,14 +47,14 @@ std::vector<CirclePtr> CirclesNegative;
 void BaseCircleApp::setup()
 {
 	// - styles
-	mStyleCircles.reset(new Style);
-	mStyleCircles->mMainColor = Color(1.f,1.f,1.f);
-	Style *sC = mStyleCircles.get();
+	mStyleCircles.reset(new PrimitiveStyle);
+	mStyleCircles->mMainColor = ColorA8u(255,0,0,113);
+	PrimitiveStyle *sC = mStyleCircles.get();
 	mParams.addParam( "Circles", &sC->mMainColor, "" );
 
-	mStyleAxises.reset(new Style);
-	mStyleAxises->mMainColor = Color(0.5f,0.25f,0.25f);
-	Style *sA = mStyleAxises.get();
+	mStyleAxises.reset(new PrimitiveStyle);
+	mStyleAxises->mMainColor = ColorA8u(174,119,94,24);
+	PrimitiveStyle *sA = mStyleAxises.get();
 	mParams.addParam( "Axises", &sA->mMainColor, "" );
 	
 	// - create main six circles

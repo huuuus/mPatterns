@@ -1,15 +1,19 @@
 #include "stdafx.h"
+#include "Node.h"
+#include "Style.h"
+#include "Axis.h"
 #include "Circle.h"
+#include "RootNode.h"
+#include "NodeMngr.h"
 
 using namespace mPatterns;
 
-Circle::Circle(Vec2f pos, Color c, float r, NodeConstPtr pParent) :
+Circle::Circle(Vec2f pos, float r, NodeWeakPtr pParent) :
 	Node(pos, pParent)	
 {
 	mpAxis = 0;
 	mPos = pos;
-	mColor = c;
-	mRadius = r;		
+	mRadius = r;
 };
 
 void Circle::draw() const {
@@ -30,16 +34,14 @@ void Circle::addAxis(float angle, PrimitiveStyle* s) {
 	mChilds.push_back(a);
 };
 
-CirclePtr CircleMngr::spawnChildOnCircleAxis(CirclePtr pCircle, unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s) {
-	assert(axis<pCircle->mAxises.size());		
-	Vec2f dir = pCircle->mAxises[axis]->mDir;
-	CirclePtr pC = CIRCLE_MGR.createCircle( dir * distInRadiusUnits * pCircle->mRadius, 
-											pCircle->mColor, radius,
-											pCircle,
-											s);
-	pC->setAxis(pCircle->mAxises[axis]);
-	pC->setStyle(s ? s : pCircle->getStyle());
-
+CirclePtr Circle::spawnCircleOnAxis(unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s) 
+{
+	assert(axis<mAxises.size());		
+	Vec2f dir = mAxises[axis]->mDir;
+	CirclePtr pC = NODE_MGR.createCircle( dir * distInRadiusUnits * mRadius, radius, this, s);
+	pC->setAxis(mAxises[axis]);
+	pC->setStyle(s ? s : getStyle());
+    
 	return pC;
 }
 
@@ -52,29 +54,3 @@ void Circle::positionAlongAxis(float dist) {
 	mPos = mpAxis->mDir*dist;
 }
 
-CirclePtr CircleMngr::createCircle(Vec2f pos, Color c, float r, NodePtr pParent, PrimitiveStyle* s) 
-{
-	CirclePtr pCircle(new Circle(pos,c,r,pParent.get()));
-	pCircle->setStyle(s);
-	pParent->addChild(pCircle);
-	return pCircle;
-};
-
-RootPtr CircleMngr::mpRoot(new Root());
-
-void CircleMngr::updateNodes(NodePtr pNode, Vec2f curPos) {
-	curPos += pNode->mPos;
-	pNode->mPosWorld = curPos;	
-	for (const_itNodeList it = pNode->mChilds.begin(); it != pNode->mChilds.end(); ++it)
-	{
-		updateNodes(*it, curPos);
-	}
-}
-
-void CircleMngr::draw(NodePtr pNode) {
-	pNode->draw();
-	for (const_itNodeList it = pNode->mChilds.begin(); it != pNode->mChilds.end(); ++it)
-	{
-		draw(*it);
-	}
-}

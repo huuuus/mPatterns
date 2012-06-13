@@ -19,6 +19,11 @@
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
 		576199CA15828B6100965F23 /* BaseCircleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576199C515828B6100965F23 /* BaseCircleApp.cpp */; };
 		576199CB15828B6100965F23 /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576199C615828B6100965F23 /* Circle.cpp */; };
+		579AF929158692D4001E5C36 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579AF926158692D4001E5C36 /* Node.cpp */; };
+		579AF92A158692D4001E5C36 /* NodeMngr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579AF927158692D4001E5C36 /* NodeMngr.cpp */; };
+		579AF92B158692D4001E5C36 /* Style.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579AF928158692D4001E5C36 /* Style.cpp */; };
+		579AF9341587D1BE001E5C36 /* Axis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579AF9331587D1BE001E5C36 /* Axis.cpp */; };
+		579AF9371587D4A5001E5C36 /* RootNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579AF9361587D4A5001E5C36 /* RootNode.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,8 +45,18 @@
 		53E3CDFB0E86099300238D2B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		576199C515828B6100965F23 /* BaseCircleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseCircleApp.cpp; path = ../src/BaseCircleApp.cpp; sourceTree = "<group>"; };
 		576199C615828B6100965F23 /* Circle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Circle.cpp; path = ../src/Circle.cpp; sourceTree = "<group>"; };
-		576199C715828B6100965F23 /* Circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Circle.h; path = ../src/Circle.h; sourceTree = "<group>"; };
 		576199C915828B6100965F23 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../src/stdafx.h; sourceTree = "<group>"; };
+		579AF926158692D4001E5C36 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Node.cpp; path = ../src/Node.cpp; sourceTree = "<group>"; };
+		579AF927158692D4001E5C36 /* NodeMngr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NodeMngr.cpp; path = ../src/NodeMngr.cpp; sourceTree = "<group>"; };
+		579AF928158692D4001E5C36 /* Style.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Style.cpp; path = ../src/Style.cpp; sourceTree = "<group>"; };
+		579AF92D158692E3001E5C36 /* Circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Circle.h; path = ../include/Circle.h; sourceTree = "<group>"; };
+		579AF92E158692E3001E5C36 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = ../include/Node.h; sourceTree = "<group>"; };
+		579AF92F158692E3001E5C36 /* NodeMngr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodeMngr.h; path = ../include/NodeMngr.h; sourceTree = "<group>"; };
+		579AF931158692E3001E5C36 /* Style.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Style.h; path = ../include/Style.h; sourceTree = "<group>"; };
+		579AF9321587D1AE001E5C36 /* Axis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Axis.h; path = ../include/Axis.h; sourceTree = "<group>"; };
+		579AF9331587D1BE001E5C36 /* Axis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Axis.cpp; path = ../src/Axis.cpp; sourceTree = "<group>"; };
+		579AF9351587D49A001E5C36 /* RootNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootNode.h; path = ../include/RootNode.h; sourceTree = "<group>"; };
+		579AF9361587D4A5001E5C36 /* RootNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RootNode.cpp; path = ../src/RootNode.cpp; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* mPatternsMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mPatternsMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -70,9 +85,13 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				579AF9361587D4A5001E5C36 /* RootNode.cpp */,
+				579AF9331587D1BE001E5C36 /* Axis.cpp */,
+				579AF926158692D4001E5C36 /* Node.cpp */,
+				579AF927158692D4001E5C36 /* NodeMngr.cpp */,
+				579AF928158692D4001E5C36 /* Style.cpp */,
 				576199C515828B6100965F23 /* BaseCircleApp.cpp */,
 				576199C615828B6100965F23 /* Circle.cpp */,
-				576199C715828B6100965F23 /* Circle.h */,
 				576199C915828B6100965F23 /* stdafx.h */,
 			);
 			name = Source;
@@ -128,6 +147,12 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				579AF9351587D49A001E5C36 /* RootNode.h */,
+				579AF9321587D1AE001E5C36 /* Axis.h */,
+				579AF92D158692E3001E5C36 /* Circle.h */,
+				579AF92E158692E3001E5C36 /* Node.h */,
+				579AF92F158692E3001E5C36 /* NodeMngr.h */,
+				579AF931158692E3001E5C36 /* Style.h */,
 				32CA4F630368D1EE00C91783 /* mPatternsMac_Prefix.pch */,
 			);
 			name = Headers;
@@ -211,6 +236,11 @@
 			files = (
 				576199CA15828B6100965F23 /* BaseCircleApp.cpp in Sources */,
 				576199CB15828B6100965F23 /* Circle.cpp in Sources */,
+				579AF929158692D4001E5C36 /* Node.cpp in Sources */,
+				579AF92A158692D4001E5C36 /* NodeMngr.cpp in Sources */,
+				579AF92B158692D4001E5C36 /* Style.cpp in Sources */,
+				579AF9341587D1BE001E5C36 /* Axis.cpp in Sources */,
+				579AF9371587D4A5001E5C36 /* RootNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +259,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = mPatternsMac_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/boost\"",
+					../include/,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
@@ -251,6 +285,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = mPatternsMac_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/boost\"",
+					../include/,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";

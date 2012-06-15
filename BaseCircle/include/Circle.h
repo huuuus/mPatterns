@@ -1,5 +1,5 @@
 namespace mPatterns {
-    DECL_SHARED_PTR(Circle)
+    DECL_WEAK_PTR(Circle)
 
     class Circle : public Node<Vec2f>, public hasStyle {
         public:
@@ -9,16 +9,18 @@ namespace mPatterns {
         
             virtual void draw() const;
             void addAxis(float angle, PrimitiveStyle* s=0);
-            void setAxis(const Axis* pAxis);
+            void setAxis(AxisWeakPtr pAxis);
         
             void positionAlongAxis(float dist);
 		
-            vector<Axis*> mAxises;
+            vector<AxisWeakPtr> mAxises;
         
-            const Axis* mpAxis;
+            AxisWeakPtr mpAxis;
         
             virtual enum NODE_TYPE getType() {return NT_CIRCLE;};
         
-            CirclePtr spawnCircleOnAxis(unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s);
+            CircleWeakPtr spawnCircleOnAxis(unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s);
+
+			virtual bool pick(Vec2f pickPos) const {return false;};
     };
 };

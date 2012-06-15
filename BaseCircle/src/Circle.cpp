@@ -26,13 +26,12 @@ void Circle::draw() const {
 };
 
 void Circle::addAxis(float angle, PrimitiveStyle* s) {
-	AxisPtr a(new Axis(mPos, angle, this));
+	AxisWeakPtr a(new Axis(mPos, angle, this));
 	a->setStyle(s);
-	mAxises.push_back(a.get());
-	mChilds.push_back(a);
+	mAxises.push_back(a);
 };
 
-void Circle::setAxis(const Axis* pAxis) {
+void Circle::setAxis(AxisWeakPtr pAxis) {
 	mpAxis = pAxis;
 }
 

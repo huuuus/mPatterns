@@ -1,118 +1,134 @@
 #include "BaseCirclePCH.h"
 
 #include "cinder/gl/gl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
+#include "cinder/rand.h"
 
-#include "Node.h"
-#include "Style.h"
-#include "Axis.h"
-#include "Circle.h"
-#include "RootNode.h"
 #include "NodeMngr.h"
 
 using namespace mPatterns;
 using namespace ci;
-using namespace ci::app;
+using namespace params;
+using namespace app;
 
 class BaseCircleApp : public AppBasic {
   public:
 	void setup();
-	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
+
+	void mouseMove( MouseEvent event );
+	void mouseDown( MouseEvent event );
+	void mouseDrag( MouseEvent event );
+	void mouseUp( MouseEvent event );
+	void mouseWheel( MouseEvent event );
 
 	void		prepareSettings( Settings *settings );	
 
 	params::InterfaceGl	mParams;	
+	Color mBgColor;
 
-	PrimitiveStylePtr mStyleCircles;
-	PrimitiveStylePtr mStyleAxises;
+	NodeWeakPtr mCurCircles7;
+	NodeWeakPtr mSelectedCircles7;
 
-	float mDistFromCenter;
-	Color mBgColor;	
+	Vec2f pickPos;
 };
 
 //---------------------------------------------------------------------------
-void BaseCircleApp::prepareSettings( Settings *settings ) 
-{
-	settings->setWindowSize( 128 + 512, 512 );
-	settings->setWindowPos( 32, 96 );
-	settings->setFullScreen( false );
-	settings->setResizable( true );
-	settings->setFrameRate( 60.0f );
 
-	mParams = params::InterfaceGl( "MCircles", Vec2i( 0, 0 ) );
-//	mParams.addSeparator();
-
-	mBgColor.set(cinder::CM_RGB, Vec3f(0.f, 0.f, 0.f));
-	mParams.addParam( "bg", &mBgColor, "" );
-
-	mDistFromCenter = 64.f;
-	mParams.addParam( "mDistFromCenter", &mDistFromCenter, "min=-100.0 max=100.0 step=1.0 keyIncr=d keyDecr=D" );
+void BaseCircleApp::mouseDown( MouseEvent event ) {
+	if (mCurCircles7) {	
+		mSelectedCircles7 = mCurCircles7;
+		OutputDebugStringA("whoo\n");
+		pickPos = event.getPos();
+	}
 }
 
-vector<CirclePtr> CirclesPositive;
-vector<CirclePtr> CirclesNegative;
-
-void BaseCircleApp::setup()
-{
-	// - styles
-	mStyleCircles.reset(new PrimitiveStyle);
-	mStyleCircles->mMainColor = ColorA8u(255,0,0,113);
-	PrimitiveStyle *sC = mStyleCircles.get();
-	mParams.addParam( "Circles", &sC->mMainColor, "" );
-
-	mStyleAxises.reset(new PrimitiveStyle);
-	mStyleAxises->mMainColor = ColorA8u(174,119,94,24);
-	PrimitiveStyle *sA = mStyleAxises.get();
-	mParams.addParam( "Axises", &sA->mMainColor, "" );
-	
-	// - create main six circles
-	Vec2f pos = getWindowCenter();
-	pos.x = 128 + 256;
-
-	CirclePtr pC = NODE_MGR.createCircle(pos, 64.f, NODE_MGR.mpRoot.get(), sC);
-
-	float axisAngles[3] = {M_PIf/2.f, M_PIf/6.f, M_PIf - M_PIf/6.f};
-	const float D_CENTER = 1.f;
-	for (int i=0;i<3;i++) 
-	{
-		pC->addAxis(axisAngles[i], sA); // 0
-		CirclesPositive.push_back(pC->spawnCircleOnAxis(i, D_CENTER, pC->mRadius, sC));
-		CirclesNegative.push_back(pC->spawnCircleOnAxis(i, -D_CENTER, pC->mRadius, sC));
+void BaseCircleApp::mouseDrag( MouseEvent event ) {
+	if (mSelectedCircles7) {
+		mSelectedCircles7->mPos += event.getPos() - pickPos;
+		pickPos = event.getPos();
 	}
+}
 
-	// - create sub circles / sub axises
-	for (int i=0;i<2;i++) {
-		vector<CirclePtr> cur = (i==0) ? CirclesNegative: CirclesPositive;
-		vector<CirclePtr>::iterator it;
-		for (it=cur.begin();it!=cur.end();++it) 
-		{
-			CirclePtr pCircle = *it; //CirclesPositive.begin();
-			for (int i=0;i<6*2;i++) {		
-				pCircle->addAxis(i*M_PIf/6.f, sA);
-				//NODE_MGR.spawnChildOnCircleAxis(pCircle, i, D_CENTER, Rand::randFloat(pC->mRadius/2.f, pC->mRadius/4.f));
+void BaseCircleApp::mouseUp( MouseEvent event ) {
+	if (mSelectedCircles7) {
+		mSelectedCircles7 = 0;
+	}
+}
+
+void	BaseCircleApp::mouseMove( MouseEvent event ) 
+{
+	NodeWeakPtr pNode = NODE_MGR.picking(event.getPos(), NODE_MGR.mpRoot);
+	mCurCircles7 = pNode; 
+}
+
+void	BaseCircleApp::mouseWheel( MouseEvent event ) {
+	NodeWeakPtr pNode = mCurCircles7;
+	if (pNode) {
+		float wheelInc = event.getWheelIncrement();
+		if (pNode->getType() == NT_CIRCLES7) {
+			Circles7WeakPtr p = static_cast<Circles7WeakPtr>(pNode);
+			for (int i=0;i<2;i++) {
+				Color c;
+
+				float H = randFloat(0.0f,1.f);
+				float S = randFloat(0.5f,1.f);
+				float V = randFloat(0.25f,1.f);
+				c.set(cinder::CM_HSV, Vec3f(H,S,V));
+
+				ColorAf &curC = p->mStyles[i]->mMainColor;
+				curC = ColorAf(c.r, c.g, c.b, curC.a);
 			}
 		}
 	}
 }
 
-void BaseCircleApp::mouseDown( MouseEvent event )
+//---------------------------------------------------------------------------
+void BaseCircleApp::prepareSettings( Settings *settings ) 
 {
+	settings->setWindowSize( 1024, 768 );
+	settings->setWindowPos( 32, 96 );
+	settings->setFullScreen( false );
+	settings->setResizable( true );
+	settings->setFrameRate( 60.0f );
+
+	mParams = params::InterfaceGl( "Global", Vec2i( 0, 0 ) );
+	mBgColor.set(cinder::CM_RGB, Vec3f(0.f, 0.f, 0.f));
+	mParams.addParam( "bg", &mBgColor, "" );
+//	mDistFromCenter = 64.f;
+//	mParams.addParam( "mDistFromCenter", &mDistFromCenter, "min=-100.0 max=100.0 step=1.0 keyIncr=d keyDecr=D" );
+}
+
+void BaseCircleApp::setup()
+{
+	mCurCircles7 = 0;
+
+	Circles7WeakPtr pC7_1 = NODE_MGR.createCircles7(48.f, false);
+	Vec2f pos = getWindowCenter();
+	//pos.x = 128 /*+ 256*/;
+	pC7_1->mPos = pos;
+
+	Circles7WeakPtr pC7_2 = NODE_MGR.createCircles7(32.f, false);
+	pos = getWindowCenter();
+	pos.x += 256;
+	pC7_2->mPos = pos;
+
+	pC7_1->spawnParameters();
+	pC7_2->spawnParameters();
 }
 
 void BaseCircleApp::update()
 {
-	float off = mDistFromCenter; //32.f + (sin(getElapsedSeconds()*1.75f)*0.5f+0.5f) * 128.f;
+//	float off = mDistFromCenter; //32.f + (sin(getElapsedSeconds()*1.75f)*0.5f+0.5f) * 128.f;
 
-	vector<CirclePtr>::iterator it;
+/*	vector<CirclePtr>::iterator it;
 	for (it=CirclesPositive.begin();it!=CirclesPositive.end();++it) {
 		(*it)->positionAlongAxis(off);
 	}
 	for (it=CirclesNegative.begin();it!=CirclesNegative.end();++it) {
 		(*it)->positionAlongAxis(-off);
-	}
+	}*/
 
 	NODE_MGR.updateNodes();
 }

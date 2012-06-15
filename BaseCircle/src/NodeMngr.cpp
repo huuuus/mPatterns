@@ -1,48 +1,58 @@
 #include "BaseCirclePCH.h"
-
-#include "Node.h"
-#include "Style.h"
-#include "Axis.h"
-#include "Circle.h"
-#include "RootNode.h"
 #include "NodeMngr.h"
 
 using namespace mPatterns;
 
-RootNodePtr NodeMngr::mpRoot(new RootNode());
+RootNodeWeakPtr NodeMngr::mpRoot(new RootNode());
 
-CirclePtr NodeMngr::createCircle(Vec2f pos, float r, NodeWeakPtr pParent, PrimitiveStyle* s)
+CircleWeakPtr NodeMngr::createCircle(Vec2f pos, float r, NodeWeakPtr pParent, PrimitiveStyle* s)
 {
-	CirclePtr pCircle(new Circle(pos,r,pParent));
+	CircleWeakPtr pCircle = new Circle(pos,r,pParent);
 	pCircle->setStyle(s);
-	pParent->addChild(pCircle);
 	return pCircle;
 }
 
-void NodeMngr::updateNodes(NodePtr pNode, Vec2f curPos) {
+Circles7WeakPtr NodeMngr::createCircles7(float radius, bool need7Styles) {
+	Circles7WeakPtr pC(new Circles7(radius, mpRoot, need7Styles));
+	return pC;
+}
+
+void NodeMngr::updateNodes(NodeWeakPtr pNode, Vec2f curPos) {
 	curPos += pNode->mPos;
 	pNode->mPosWorld = curPos;	
 	for (const_itNodeList it = pNode->mChilds.begin(); it != pNode->mChilds.end(); ++it)
 	{
-		updateNodes(*it, curPos);
+		updateNodes(it->get(), curPos);
 	}
 }
 
-void NodeMngr::draw(NodePtr pNode) {
+void NodeMngr::draw(NodeWeakPtr pNode) {
 	pNode->draw();
 	for (const_itNodeList it = pNode->mChilds.begin(); it != pNode->mChilds.end(); ++it)
 	{
-		draw(*it);
+		draw(it->get());
 	}
 }
 
-CirclePtr Circle::spawnCircleOnAxis(unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s) 
+CircleWeakPtr Circle::spawnCircleOnAxis(unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s) 
 {
 	assert(axis<mAxises.size());		
 	Vec2f dir = mAxises[axis]->mDir;
-	CirclePtr pC = NODE_MGR.createCircle( dir * distInRadiusUnits * mRadius, radius, this, s);
+	CircleWeakPtr pC = NODE_MGR.createCircle( dir * distInRadiusUnits * mRadius, radius, this, s);
 	pC->setAxis(mAxises[axis]);
-	pC->setStyle(s ? s : getStyle());
-    
+	pC->setStyle(s ? s : getStyle());    
 	return pC;
 }
+
+
+NodeWeakPtr NodeMngr::picking(Vec2f pickPos, NodeWeakPtr pNode) {
+	if (pNode->pick(pickPos))
+		return pNode;
+	for (const_itNodeList it = pNode->mChilds.begin(); it != pNode->mChilds.end(); ++it) {
+		NodeWeakPtr res = picking(pickPos, it->get());
+		if (res)
+			return res;
+	}
+	return 0;
+}
+

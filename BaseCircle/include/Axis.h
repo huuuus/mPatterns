@@ -1,5 +1,5 @@
 namespace mPatterns {
-    DECL_SHARED_PTR(Axis)
+    DECL_WEAK_PTR(Axis)
     
     class Axis : public Node<Vec2f>, public hasStyle {
     public:
@@ -7,5 +7,7 @@ namespace mPatterns {
         virtual void draw() const;
         Vec2f mDir;
         virtual enum NODE_TYPE getType() {return NT_AXIS;};
+
+		virtual bool pick(Vec2f pickPos) const {return false;};
     };
 };

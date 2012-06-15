@@ -103,15 +103,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Axis.cpp" />
     <ClCompile Include="..\src\BaseCircleApp.cpp" />
     <ClCompile Include="..\src\Circle.cpp" />
+    <ClCompile Include="..\src\Node.cpp" />
+    <ClCompile Include="..\src\NodeMngr.cpp" />
+    <ClCompile Include="..\src\RootNode.cpp" />
     <ClCompile Include="..\src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\src\Style.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Axis.h" />
+    <ClInclude Include="..\include\Circle.h" />
+    <ClInclude Include="..\include\Node.h" />
+    <ClInclude Include="..\include\NodeMngr.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\Circle.h" />
+    <ClInclude Include="..\include\RootNode.h" />
+    <ClInclude Include="..\include\Style.h" />
     <ClInclude Include="..\src\stdafx.h" />
   </ItemGroup>
   <ItemGroup>

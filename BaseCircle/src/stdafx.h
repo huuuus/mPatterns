@@ -1,4 +1,4 @@
-#ifdef __FOR_PCH
+#if defined(__FOR_PCH) || defined(WIN32)
 
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"

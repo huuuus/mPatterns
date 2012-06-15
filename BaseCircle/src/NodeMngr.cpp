@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "BaseCirclePCH.h"
 
 #include "Node.h"
 #include "Style.h"
@@ -34,4 +34,15 @@ void NodeMngr::draw(NodePtr pNode) {
 	{
 		draw(*it);
 	}
+}
+
+CirclePtr Circle::spawnCircleOnAxis(unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s) 
+{
+	assert(axis<mAxises.size());		
+	Vec2f dir = mAxises[axis]->mDir;
+	CirclePtr pC = NODE_MGR.createCircle( dir * distInRadiusUnits * mRadius, radius, this, s);
+	pC->setAxis(mAxises[axis]);
+	pC->setStyle(s ? s : getStyle());
+    
+	return pC;
 }

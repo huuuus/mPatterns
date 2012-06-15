@@ -1,4 +1,7 @@
 namespace mPatterns {
+	using namespace ci;
+	using namespace std;
+
     DECL_SHARED_PTR_EX(Node, Vec2f)
     
     typedef vector<NodePtr>::const_iterator const_itNodeVec;

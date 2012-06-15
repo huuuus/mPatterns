@@ -1,10 +1,8 @@
-#include "stdafx.h"
+#include "BaseCirclePCH.h"
 #include "Node.h"
 #include "Style.h"
 #include "Axis.h"
 #include "Circle.h"
-#include "RootNode.h"
-#include "NodeMngr.h"
 
 using namespace mPatterns;
 
@@ -33,17 +31,6 @@ void Circle::addAxis(float angle, PrimitiveStyle* s) {
 	mAxises.push_back(a.get());
 	mChilds.push_back(a);
 };
-
-CirclePtr Circle::spawnCircleOnAxis(unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s) 
-{
-	assert(axis<mAxises.size());		
-	Vec2f dir = mAxises[axis]->mDir;
-	CirclePtr pC = NODE_MGR.createCircle( dir * distInRadiusUnits * mRadius, radius, this, s);
-	pC->setAxis(mAxises[axis]);
-	pC->setStyle(s ? s : getStyle());
-    
-	return pC;
-}
 
 void Circle::setAxis(const Axis* pAxis) {
 	mpAxis = pAxis;

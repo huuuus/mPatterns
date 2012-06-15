@@ -55,6 +55,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PrecompiledHeaderFile>BaseCirclePCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>..\..\..\cinder_master\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -76,10 +77,10 @@
       <AdditionalIncludeDirectories>..\include;..\..\..\cinder_master\include;..\..\..\cinder_master\boost</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>BaseCirclePCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -109,7 +110,7 @@
     <ClCompile Include="..\src\Node.cpp" />
     <ClCompile Include="..\src\NodeMngr.cpp" />
     <ClCompile Include="..\src\RootNode.cpp" />
-    <ClCompile Include="..\src\stdafx.cpp">
+    <ClCompile Include="..\src\BaseCirclePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\Style.cpp" />
@@ -122,7 +123,7 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\RootNode.h" />
     <ClInclude Include="..\include\Style.h" />
-    <ClInclude Include="..\src\stdafx.h" />
+    <ClInclude Include="..\src\BaseCirclePCH.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />

@@ -1,17 +1,9 @@
 #if defined(__FOR_PCH) || defined(WIN32)
 
-#include "cinder/app/AppBasic.h"
-#include "cinder/gl/gl.h"
-#include "cinder/rand.h"
-#include "cinder/Utilities.h"
 #include <assert.h>
 #include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 
-using namespace ci;
-using namespace ci::app;
-using namespace std;
-using namespace boost;
+#include "cinder/app/AppBasic.h"
 
 #define DECL_SHARED_PTR(className)  class className;\
                                     typedef boost::shared_ptr<className> className##Ptr;\
@@ -21,5 +13,7 @@ using namespace boost;
                                                 class className;\
                                                 typedef boost::shared_ptr<className<extra> > className##Ptr;\
                                                 typedef className<extra>* className##WeakPtr;
+
+#define M_PIf (3.14159265358979323846f)
 
 #endif

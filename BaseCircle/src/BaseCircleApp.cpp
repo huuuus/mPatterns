@@ -1,4 +1,8 @@
-#include "stdafx.h"
+#include "BaseCirclePCH.h"
+
+#include "cinder/gl/gl.h"
+#include "cinder/gl/gl.h"
+#include "cinder/params/Params.h"
 
 #include "Node.h"
 #include "Style.h"
@@ -8,10 +12,8 @@
 #include "NodeMngr.h"
 
 using namespace mPatterns;
-
-#include "cinder/params/Params.h"
-
-using namespace mPatterns;
+using namespace ci;
+using namespace ci::app;
 
 class BaseCircleApp : public AppBasic {
   public:
@@ -72,7 +74,7 @@ void BaseCircleApp::setup()
 
 	CirclePtr pC = NODE_MGR.createCircle(pos, 64.f, NODE_MGR.mpRoot.get(), sC);
 
-	float axisAngles[3] = {M_PI/2.f, M_PI/6.f, M_PI - M_PI/6.f};
+	float axisAngles[3] = {M_PIf/2.f, M_PIf/6.f, M_PIf - M_PIf/6.f};
 	const float D_CENTER = 1.f;
 	for (int i=0;i<3;i++) 
 	{
@@ -89,7 +91,7 @@ void BaseCircleApp::setup()
 		{
 			CirclePtr pCircle = *it; //CirclesPositive.begin();
 			for (int i=0;i<6*2;i++) {		
-				pCircle->addAxis(i*M_PI/6.f, sA);
+				pCircle->addAxis(i*M_PIf/6.f, sA);
 				//NODE_MGR.spawnChildOnCircleAxis(pCircle, i, D_CENTER, Rand::randFloat(pC->mRadius/2.f, pC->mRadius/4.f));
 			}
 		}

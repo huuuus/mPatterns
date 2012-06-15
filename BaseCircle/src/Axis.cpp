@@ -1,11 +1,8 @@
-#include "stdafx.h"
-
+#include "BaseCirclePCH.h"
+#include "cinder/gl/gl.h"
 #include "Node.h"
 #include "Style.h"
 #include "Axis.h"
-#include "Circle.h"
-#include "RootNode.h"
-#include "NodeMngr.h"
 
 using namespace mPatterns;
 

@@ -7,7 +7,7 @@
 using namespace mPatterns;
 
 Axis::Axis(Vec2f pos, float angle, NodeWeakPtr pParent) : 
-    Node(pos, pParent)
+    Node<Vec2f>(pos, pParent)
 {
     mDir.set(cos(angle),-sin(angle));
 }

@@ -3,6 +3,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
 #include "cinder/rand.h"
+#include "cinder/Timeline.h"
 
 #include "NodeMngr.h"
 
@@ -39,7 +40,6 @@ class BaseCircleApp : public AppBasic {
 void BaseCircleApp::mouseDown( MouseEvent event ) {
 	if (mCurCircles7) {	
 		mSelectedCircles7 = mCurCircles7;
-		OutputDebugStringA("whoo\n");
 		pickPos = event.getPos();
 	}
 }
@@ -72,12 +72,16 @@ void	BaseCircleApp::mouseWheel( MouseEvent event ) {
 			for (int i=0;i<2;i++) {
 				Color c;
 
-				float H = randFloat(0.0f,1.f);
-				float S = randFloat(0.5f,1.f);
-				float V = randFloat(0.25f,1.f);
-				c.set(cinder::CM_HSV, Vec3f(H,S,V));
-
-				ColorAf &curC = p->mStyles[i]->mMainColor;
+                ColorAf &curC = p->mStyles[i]->mMainColor;
+                Vec3f hsv;
+                hsv = rgbToHSV( curC );
+                
+                float max = wheelInc*0.25f;
+				hsv.x += randFloat(-max, max);
+				hsv.y += randFloat(-max, max);
+				hsv.z = randFloat(0.25f, 0.5f);
+				c.set(cinder::CM_HSV, hsv);
+				
 				curC = ColorAf(c.r, c.g, c.b, curC.a);
 			}
 		}
@@ -100,11 +104,23 @@ void BaseCircleApp::prepareSettings( Settings *settings )
 //	mParams.addParam( "mDistFromCenter", &mDistFromCenter, "min=-100.0 max=100.0 step=1.0 keyIncr=d keyDecr=D" );
 }
 
+//Anim<Vec2f> mPos;
+//vector<Vec2f> mDestinations;
+/*  
+ int mNumDestinations=8;
+ mDestinations.push_back(getWindowCenter());
+ timeline().apply( &mPos, (Vec2f)mDestinations[0], 3.f, EaseInOutQuad() );
+ for( int i=1; i<mNumDestinations; i++ ){
+ mDestinations.push_back(Vec2f(Rand::randFloat(getWindowWidth()),Rand::randFloat(getWindowHeight())));
+ timeline().appendTo( &mPos, (Vec2f)mDestinations[i], 1.f, EaseInOutQuad() );
+ }*/
+
 void BaseCircleApp::setup()
 {
 	mCurCircles7 = 0;
+    mSelectedCircles7 = 0;
 
-	Circles7WeakPtr pC7_1 = NODE_MGR.createCircles7(48.f, false);
+    Circles7WeakPtr pC7_1 = NODE_MGR.createCircles7(48.f, false);
 	Vec2f pos = getWindowCenter();
 	//pos.x = 128 /*+ 256*/;
 	pC7_1->mPos = pos;
@@ -116,11 +132,20 @@ void BaseCircleApp::setup()
 
 	pC7_1->spawnParameters();
 	pC7_2->spawnParameters();
+    
+    //mPos = getWindowCenter();
+    
+//    new t_softHueAnimator(&(pC7_1->getStyle()->mMainColor));
 }
 
+float gT_s;
 void BaseCircleApp::update()
 {
-//	float off = mDistFromCenter; //32.f + (sin(getElapsedSeconds()*1.75f)*0.5f+0.5f) * 128.f;
+    gT_s = getElapsedSeconds();
+    
+    //pC7_1->mPos = mPos;
+
+    //	float off = mDistFromCenter; //32.f + (sin(getElapsedSeconds()*1.75f)*0.5f+0.5f) * 128.f;
 
 /*	vector<CirclePtr>::iterator it;
 	for (it=CirclesPositive.begin();it!=CirclesPositive.end();++it) {
@@ -141,5 +166,6 @@ void BaseCircleApp::draw()
 	NODE_MGR.draw();
 	params::InterfaceGl::draw();
 }
+
 
 CINDER_APP_BASIC( BaseCircleApp, RendererGl )

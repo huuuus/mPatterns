@@ -21,4 +21,13 @@ using namespace std;
 
 #define M_PIf (3.14159265358979323846f)
 
+#ifdef WIN32
+    #define DEBUG_OUT(s) OutputDebugStringA(s)
+#else
+    #define DEBUG_OUT(s)
+#endif
+
+// global T in seconds
+extern float gT_s;
+
 #endif

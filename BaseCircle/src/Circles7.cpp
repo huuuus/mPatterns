@@ -10,7 +10,7 @@ using namespace cinder::params;
 using boost::format;
 
 Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) : 
-	Node(Vec2f(0,0), pParent),
+	Node<Vec2f>(Vec2f(0,0), pParent),
 	mpParams(0)
 {	
 	for (int i=0;i<(need7Styles ? 7 : 2);i++) {
@@ -46,7 +46,7 @@ const int TOOLBOX_H = (int)(200*0.9);
 
 void Circles7::spawnParameters() {	
 	if (!mpParams) {
-		unsigned int id = (unsigned int)(this);
+		unsigned long id = (unsigned long)(this);
 		string sId = (format("7CIRCLE_%d") % id).str();
 		mpParams = new InterfaceGl(sId, Vec2i(TOOLBOX_W,TOOLBOX_H));	
 

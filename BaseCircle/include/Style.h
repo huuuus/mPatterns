@@ -12,8 +12,7 @@ namespace mPatterns {
             mStyle = 0;
         };
         
-        PrimitiveStyle* mStyle;	
-        
+        PrimitiveStyle* mStyle;        
         PrimitiveStyle* getStyle() const {return mStyle;};
         void setStyle(PrimitiveStyle* s) {mStyle=s;};
     };
@@ -31,4 +30,7 @@ namespace mPatterns {
         
         float mStroke;
     };
+    
+    //----------------------------------------------------------
+
 };

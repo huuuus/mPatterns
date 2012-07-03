@@ -3,7 +3,13 @@ namespace mPatterns {
 
     class Circle : public Node<Vec2f>, public hasStyle {
         public:
-            Circle(Vec2f pos, float r, NodeWeakPtr pParent);
+        
+            Circle(Vec2f pos, float r, NodeWeakPtr pParent) : Node<Vec2f>(pos, pParent)
+            {
+                mpAxis = 0;
+                mPos = pos;
+                mRadius = r;
+            };
         
             float mRadius;
         

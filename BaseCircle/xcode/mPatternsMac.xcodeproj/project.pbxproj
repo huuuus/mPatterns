@@ -17,6 +17,9 @@
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
+		5702F4BB158BD7F9002306B3 /* BaseCirclePCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5702F4B9158BD7F9002306B3 /* BaseCirclePCH.cpp */; };
+		5702F4BC158BD7F9002306B3 /* Circles7.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5702F4BA158BD7F9002306B3 /* Circles7.cpp */; };
+		5757EE9315A2627A00E84402 /* ColorAnimator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5757EE9215A2627A00E84402 /* ColorAnimator.cpp */; };
 		576199CA15828B6100965F23 /* BaseCircleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576199C515828B6100965F23 /* BaseCircleApp.cpp */; };
 		576199CB15828B6100965F23 /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576199C615828B6100965F23 /* Circle.cpp */; };
 		579AF929158692D4001E5C36 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579AF926158692D4001E5C36 /* Node.cpp */; };
@@ -43,9 +46,15 @@
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		53E3CDFB0E86099300238D2B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		5702F4B6158BD7D3002306B3 /* Circles7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Circles7.h; path = ../include/Circles7.h; sourceTree = "<group>"; };
+		5702F4B7158BD7D3002306B3 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
+		5702F4B8158BD7E2002306B3 /* BaseCirclePCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseCirclePCH.h; path = ../src/BaseCirclePCH.h; sourceTree = "<group>"; };
+		5702F4B9158BD7F9002306B3 /* BaseCirclePCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseCirclePCH.cpp; path = ../src/BaseCirclePCH.cpp; sourceTree = "<group>"; };
+		5702F4BA158BD7F9002306B3 /* Circles7.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Circles7.cpp; path = ../src/Circles7.cpp; sourceTree = "<group>"; };
+		5757EE9015A2626E00E84402 /* ColorAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorAnimator.h; path = ../include/ColorAnimator.h; sourceTree = "<group>"; };
+		5757EE9215A2627A00E84402 /* ColorAnimator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorAnimator.cpp; path = ../src/ColorAnimator.cpp; sourceTree = "<group>"; };
 		576199C515828B6100965F23 /* BaseCircleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseCircleApp.cpp; path = ../src/BaseCircleApp.cpp; sourceTree = "<group>"; };
 		576199C615828B6100965F23 /* Circle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Circle.cpp; path = ../src/Circle.cpp; sourceTree = "<group>"; };
-		576199C915828B6100965F23 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../src/stdafx.h; sourceTree = "<group>"; };
 		579AF926158692D4001E5C36 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Node.cpp; path = ../src/Node.cpp; sourceTree = "<group>"; };
 		579AF927158692D4001E5C36 /* NodeMngr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NodeMngr.cpp; path = ../src/NodeMngr.cpp; sourceTree = "<group>"; };
 		579AF928158692D4001E5C36 /* Style.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Style.cpp; path = ../src/Style.cpp; sourceTree = "<group>"; };
@@ -85,6 +94,9 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5757EE9215A2627A00E84402 /* ColorAnimator.cpp */,
+				5702F4B9158BD7F9002306B3 /* BaseCirclePCH.cpp */,
+				5702F4BA158BD7F9002306B3 /* Circles7.cpp */,
 				579AF9361587D4A5001E5C36 /* RootNode.cpp */,
 				579AF9331587D1BE001E5C36 /* Axis.cpp */,
 				579AF926158692D4001E5C36 /* Node.cpp */,
@@ -92,7 +104,6 @@
 				579AF928158692D4001E5C36 /* Style.cpp */,
 				576199C515828B6100965F23 /* BaseCircleApp.cpp */,
 				576199C615828B6100965F23 /* Circle.cpp */,
-				576199C915828B6100965F23 /* stdafx.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -147,6 +158,10 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				5757EE9015A2626E00E84402 /* ColorAnimator.h */,
+				5702F4B8158BD7E2002306B3 /* BaseCirclePCH.h */,
+				5702F4B6158BD7D3002306B3 /* Circles7.h */,
+				5702F4B7158BD7D3002306B3 /* Resources.h */,
 				579AF9351587D49A001E5C36 /* RootNode.h */,
 				579AF9321587D1AE001E5C36 /* Axis.h */,
 				579AF92D158692E3001E5C36 /* Circle.h */,
@@ -241,6 +256,9 @@
 				579AF92B158692D4001E5C36 /* Style.cpp in Sources */,
 				579AF9341587D1BE001E5C36 /* Axis.cpp in Sources */,
 				579AF9371587D4A5001E5C36 /* RootNode.cpp in Sources */,
+				5702F4BB158BD7F9002306B3 /* BaseCirclePCH.cpp in Sources */,
+				5702F4BC158BD7F9002306B3 /* Circles7.cpp in Sources */,
+				5757EE9315A2627A00E84402 /* ColorAnimator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +268,7 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CINDER_PATH = ../../../Cinder;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -259,6 +278,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = mPatternsMac_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					"\"$(CINDER_PATH)/boost\"",
 					../include/,
@@ -267,6 +287,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
 				PRODUCT_NAME = mPatternsMac;
+				VALID_ARCHS = "i386 x86_64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -274,6 +295,7 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CINDER_PATH = ../../../Cinder;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -285,6 +307,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = mPatternsMac_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					"\"$(CINDER_PATH)/boost\"",
 					../include/,
@@ -294,6 +317,7 @@
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
 				PRODUCT_NAME = mPatternsMac;
 				STRIP_INSTALLED_PRODUCT = YES;
+				VALID_ARCHS = "i386 x86_64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

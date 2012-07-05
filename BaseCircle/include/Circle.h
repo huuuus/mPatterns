@@ -1,10 +1,10 @@
 namespace mPatterns {
     DECL_WEAK_PTR(Circle)
 
-    class Circle : public Node<Vec2f>, public hasStyle {
+    class Circle : NodeNotSelectable, public hasStyle {
         public:
         
-            Circle(Vec2f pos, float r, NodeWeakPtr pParent) : Node<Vec2f>(pos, pParent)
+            Circle(Vec2f pos, float r, NodeWeakPtr pParent) : NodeNotSelectable(pos, pParent)
             {
                 mpAxis = 0;
                 mPos = pos;

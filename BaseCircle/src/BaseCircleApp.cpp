@@ -60,7 +60,7 @@ void BaseCircleApp::mouseUp( MouseEvent event ) {
 void	BaseCircleApp::mouseMove( MouseEvent event ) 
 {
 	NodeWeakPtr pNode = NODE_MGR.picking(event.getPos(), NODE_MGR.mpRoot);
-	mCurCircles7 = pNode; 
+	mCurCircles7 = pNode;
 }
 
 void	BaseCircleApp::mouseWheel( MouseEvent event ) {
@@ -130,8 +130,8 @@ void BaseCircleApp::setup()
 	pos.x += 256;
 	pC7_2->mPos = pos;
 
-	pC7_1->spawnParameters();
-	pC7_2->spawnParameters();
+//	pC7_1->spawnParameters();
+//	pC7_2->spawnParameters();
     
     //mPos = getWindowCenter();
     

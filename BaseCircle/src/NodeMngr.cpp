@@ -47,7 +47,10 @@ CircleWeakPtr Circle::spawnCircleOnAxis(unsigned int axis, float distInRadiusUni
 
 NodeWeakPtr NodeMngr::picking(Vec2f pickPos, NodeWeakPtr pNode) {
 	if (pNode->pick(pickPos))
+    {
+        pNode->notifySelected(!pNode->isSelected());
 		return pNode;
+    }
 	for (const_itNodeList it = pNode->mChilds.begin(); it != pNode->mChilds.end(); ++it) {
 		NodeWeakPtr res = picking(pickPos, it->get());
 		if (res)

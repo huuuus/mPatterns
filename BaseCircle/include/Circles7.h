@@ -4,8 +4,9 @@ namespace cinder {
 	}
 }
 
+// 7 circles unity
+
 namespace mPatterns {
-	// 7 circles unity
 	DECL_WEAK_PTR(Circles7)
 
 	class Circles7 : public Node<Vec2f> {	
@@ -24,5 +25,8 @@ namespace mPatterns {
 	protected:
 		vector<CircleWeakPtr> mCircles;		
 		cinder::params::InterfaceGl* mpParams;
+        
+        virtual void onSelected();
+        virtual void onUnselected();
 	};
 }

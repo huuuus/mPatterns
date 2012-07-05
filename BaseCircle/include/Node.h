@@ -11,13 +11,35 @@ namespace mPatterns {
         NT_AXIS
     };
 
-	class Pickable {
-		public:
-			virtual bool pick(Vec2f pickPos) const = 0;
+    class Pickable {
+    public:
+//        virtual bool pick(Vec2f pickPos) const = 0;
 	};
 
+    class Selectable : Pickable {
+    protected:
+        virtual void onSelected() = 0;
+        virtual void onUnselected() = 0;
+        
+        bool m_isSel;
+    public:
+        Selectable() {m_isSel=false;};
+        virtual bool pick(Vec2f pickPos) const = 0;  
+
+        virtual void notifySelected(bool s)
+        {
+            if (!s && m_isSel) 
+                onUnselected();
+            else if (s && !m_isSel) 
+                onSelected(); 
+            m_isSel=s;
+        };
+        
+        bool isSelected() {return m_isSel;};
+    };
+    
     template<class CPos>
-    class Node : public Pickable {
+    class Node : public Selectable {
     public:
         Node(CPos p, NodeWeakPtr pParent) : mPos(p) , mpParent(pParent) 
         {
@@ -43,5 +65,12 @@ namespace mPatterns {
 		};
 
 		virtual void spawnParameters() {};
+    };
+    
+    class NodeNotSelectable : public Node<Vec2f> {
+    protected:
+        NodeNotSelectable(Vec2f p, NodeWeakPtr pParent) : Node<Vec2f>(p,pParent) {};
+        virtual void onSelected() {};
+        virtual void onUnselected() {};       
     };
 };

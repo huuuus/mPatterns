@@ -1,7 +1,7 @@
 namespace mPatterns {
     DECL_WEAK_PTR(Axis)
     
-    class Axis : public Node<Vec2f>, public hasStyle {
+    class Axis : public NodeNotSelectable, public hasStyle {
     public:
         Axis(Vec2f pos, float angle, NodeWeakPtr pParent);        
         virtual void draw() const;

@@ -58,6 +58,18 @@ void Circles7::spawnParameters() {
 }
 
 void Circles7::draw() const {
-	//TwDefine(" mybar position='200 40' "); // move bar to position (200, 40)
-	mpParams->setOptions("",(format("position='%d %d'") % (mPosWorld.x-TOOLBOX_W/2) % (mPosWorld.y-TOOLBOX_H-mCircles[0]->mRadius*2.f-16.f)).str());
+    if (mpParams) {
+        //TwDefine(" mybar position='200 40' "); // move bar to position (200, 40)
+        mpParams->setOptions("",(format("position='%d %d'") % (mPosWorld.x-TOOLBOX_W/2) % (mPosWorld.y-TOOLBOX_H-mCircles[0]->mRadius*2.f-16.f)).str());
+    }
+}
+
+void Circles7::onSelected()
+{
+    spawnParameters();   
+}
+
+void Circles7::onUnselected()
+{
+    
 }

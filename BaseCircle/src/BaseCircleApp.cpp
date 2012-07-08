@@ -12,6 +12,13 @@ using namespace ci;
 using namespace params;
 using namespace app;
 
+class AppState {
+public:
+    virtual void init() = 0;    
+    virtual void deInit() = 0;    
+    virtual void update(float fDt) = 0;
+}
+
 class BaseCircleApp : public AppBasic {
   public:
 	void setup();
@@ -33,6 +40,12 @@ class BaseCircleApp : public AppBasic {
 	NodeWeakPtr mSelectedCircles7;
 
 	Vec2f pickPos;
+    
+    void setup2Circles7();
+    
+ private:
+    Anim<Vec2f> mAnimatedPos;
+    vector<Vec2f> mAnimDestinations;
 };
 
 //---------------------------------------------------------------------------
@@ -100,60 +113,46 @@ void BaseCircleApp::prepareSettings( Settings *settings )
 	mParams = params::InterfaceGl( "Global", Vec2i( 0, 0 ) );
 	mBgColor.set(cinder::CM_RGB, Vec3f(0.f, 0.f, 0.f));
 	mParams.addParam( "bg", &mBgColor, "" );
-//	mDistFromCenter = 64.f;
-//	mParams.addParam( "mDistFromCenter", &mDistFromCenter, "min=-100.0 max=100.0 step=1.0 keyIncr=d keyDecr=D" );
 }
 
-//Anim<Vec2f> mPos;
-//vector<Vec2f> mDestinations;
-/*  
- int mNumDestinations=8;
- mDestinations.push_back(getWindowCenter());
- timeline().apply( &mPos, (Vec2f)mDestinations[0], 3.f, EaseInOutQuad() );
- for( int i=1; i<mNumDestinations; i++ ){
- mDestinations.push_back(Vec2f(Rand::randFloat(getWindowWidth()),Rand::randFloat(getWindowHeight())));
- timeline().appendTo( &mPos, (Vec2f)mDestinations[i], 1.f, EaseInOutQuad() );
- }*/
+void BaseCircleApp::testCinderTimeline()
+{
+     int mNumDestinations=8;
+     mAnimDestinations.push_back(getWindowCenter());
+     timeline().apply( &mAnimatedPos, (Vec2f)mDestinations[0], 3.f, EaseInOutQuad() );
+     for( int i=1; i<mNumDestinations; i++ ) {
+         mAnimDestinations.push_back(Vec2f(Rand::randFloat(getWindowWidth()),Rand::randFloat(getWindowHeight())));
+         timeline().appendTo( &mAnimatedPos, (Vec2f)mAnimDestinations[i], 1.f, EaseInOutQuad() );
+     }
+}
+
+void BaseCircleApp::setup2Circles7()
+{
+    Circles7WeakPtr pC7_1 = NODE_MGR.createCircles7(48.f, false);
+	Vec2f pos = getWindowCenter();
+	pC7_1->mPos = pos;
+    
+	Circles7WeakPtr pC7_2 = NODE_MGR.createCircles7(32.f, false);
+	pos = getWindowCenter();
+	pos.x += 256;
+	pC7_2->mPos = pos;    
+}
 
 void BaseCircleApp::setup()
 {
 	mCurCircles7 = 0;
     mSelectedCircles7 = 0;
-
-    Circles7WeakPtr pC7_1 = NODE_MGR.createCircles7(48.f, false);
-	Vec2f pos = getWindowCenter();
-	//pos.x = 128 /*+ 256*/;
-	pC7_1->mPos = pos;
-
-	Circles7WeakPtr pC7_2 = NODE_MGR.createCircles7(32.f, false);
-	pos = getWindowCenter();
-	pos.x += 256;
-	pC7_2->mPos = pos;
-
-//	pC7_1->spawnParameters();
-//	pC7_2->spawnParameters();
     
-    //mPos = getWindowCenter();
-    
-//    new t_softHueAnimator(&(pC7_1->getStyle()->mMainColor));
+    setup2Circles7();
 }
 
 float gT_s;
 void BaseCircleApp::update()
 {
     gT_s = getElapsedSeconds();
-    
-    //pC7_1->mPos = mPos;
 
-    //	float off = mDistFromCenter; //32.f + (sin(getElapsedSeconds()*1.75f)*0.5f+0.5f) * 128.f;
-
-/*	vector<CirclePtr>::iterator it;
-	for (it=CirclesPositive.begin();it!=CirclesPositive.end();++it) {
-		(*it)->positionAlongAxis(off);
-	}
-	for (it=CirclesNegative.begin();it!=CirclesNegative.end();++it) {
-		(*it)->positionAlongAxis(-off);
-	}*/
+    if (mUseAnimation)
+        pC7_1->mPos = mAnimatedPos;
 
 	NODE_MGR.updateNodes();
 }

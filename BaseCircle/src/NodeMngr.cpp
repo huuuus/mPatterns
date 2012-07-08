@@ -36,7 +36,7 @@ void NodeMngr::draw(NodeWeakPtr pNode) {
 
 CircleWeakPtr Circle::spawnCircleOnAxis(unsigned int axis, float distInRadiusUnits, float radius, PrimitiveStyle* s) 
 {
-	assert(axis<mAxises.size());		
+	assert(axis<mAxises.size());
 	Vec2f dir = mAxises[axis]->mDir;
 	CircleWeakPtr pC = NODE_MGR.createCircle( dir * distInRadiusUnits * mRadius, radius, this, s);
 	pC->setAxis(mAxises[axis]);

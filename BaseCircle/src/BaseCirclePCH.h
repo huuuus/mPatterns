@@ -29,7 +29,4 @@ using boost::format;
     #define DEBUG_OUT(s)
 #endif
 
-// global T in seconds
-extern float gT_s;
-
 #endif

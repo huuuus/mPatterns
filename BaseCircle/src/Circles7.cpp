@@ -4,7 +4,6 @@
 
 using namespace mPatterns;
 using namespace std;
-using namespace ci;
 using namespace app;
 using namespace cinder::params;
 

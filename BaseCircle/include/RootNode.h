@@ -1,5 +1,3 @@
-using namespace ci;
-
 namespace mPatterns {
     DECL_WEAK_PTR(RootNode)
     

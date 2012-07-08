@@ -1,12 +1,8 @@
 #include "BaseCirclePCH.h"
-#include "cinder/gl/gl.h"
-#include "Node.h"
-#include "Style.h"
-#include "Axis.h"
-#include "cinder/gl/gl.h"
 #include "ColorAnimator.h"
 
 using namespace mPatterns;
+using namespace app;
 
 t_IColorAnimatorVec IColorAnimator::mColorAnimators;
 
@@ -41,7 +37,7 @@ softHueTechnique::softHueTechnique() {
 };
 
 void softHueTechnique::tick(cinder::ColorAf* pCol) {
-    float s = sin(gT_s*34.f)*0.5f+0.5f;
+    float s = sin( getElapsedSeconds()*34.f)*0.5f+0.5f;
     Colorf c;
     c.set(cinder::CM_HSV, Vec3f(s,0.5f,0.5f));
     *pCol = c;

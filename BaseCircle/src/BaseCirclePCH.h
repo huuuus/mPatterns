@@ -2,11 +2,13 @@
 
 #include <assert.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/format.hpp>
 
 #include "cinder/app/AppBasic.h"
 
 using namespace ci;
 using namespace std;	
+using boost::format;
 
 #define DECL_SHARED_PTR(className)  class className;\
                                     typedef boost::shared_ptr<className> className##Ptr;\

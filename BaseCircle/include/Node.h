@@ -26,13 +26,13 @@ namespace mPatterns {
         Selectable() {m_isSel=false;};
         virtual bool pick(Vec2f pickPos) const = 0;  
 
-        virtual void notifySelected(bool s)
+        virtual void notifySelected()
         {
-            if (!s && m_isSel) 
+            m_isSel = !m_isSel;
+            if (!m_isSel) 
                 onUnselected();
-            else if (s && !m_isSel) 
+            else 
                 onSelected(); 
-            m_isSel=s;
         };
         
         bool isSelected() {return m_isSel;};

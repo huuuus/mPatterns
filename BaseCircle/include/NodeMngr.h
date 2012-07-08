@@ -18,7 +18,7 @@ namespace mPatterns {
         
         static void draw(NodeWeakPtr pNode=mpRoot);
         static void updateNodes(NodeWeakPtr pNode = mpRoot, Vec2f curPos = Vec2f(0,0));
-		static NodeWeakPtr picking(Vec2f pickPos, NodeWeakPtr pNode = mpRoot);
+		static NodeWeakPtr picking(bool affectSelectables, Vec2f pickPos, NodeWeakPtr pNode = mpRoot);
     };
 };
 

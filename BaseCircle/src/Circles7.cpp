@@ -1,13 +1,12 @@
 #include "BaseCirclePCH.h"
 #include "NodeMngr.h"
 #include "cinder/params/Params.h"
-#include <boost/format.hpp>
 
 using namespace mPatterns;
 using namespace std;
 using namespace ci;
+using namespace app;
 using namespace cinder::params;
-using boost::format;
 
 Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) : 
 	Node<Vec2f>(Vec2f(0,0), pParent),
@@ -53,14 +52,23 @@ void Circles7::spawnParameters() {
 		mpParams->addParam( "CENTRAL", &mStyles[0]->mMainColor, "" );
 		mpParams->addParam( "AXISES", &mAxisesStyles[0]->mMainColor, "" );
 		mpParams->addParam( "SUB", &mStyles[1]->mMainColor, "" );
-	}		
-//	pParams.addParam( "SUB_AXISES_" + sId, &mAxisesStyles[1]->mMainColor, "" );
+        //	pParams.addParam( "SUB_AXISES_" + sId, &mAxisesStyles[1]->mMainColor, "" );
+	}
+    mpParams->show();
 }
 
 void Circles7::draw() const {
     if (mpParams) {
-        //TwDefine(" mybar position='200 40' "); // move bar to position (200, 40)
-        mpParams->setOptions("",(format("position='%d %d'") % (mPosWorld.x-TOOLBOX_W/2) % (mPosWorld.y-TOOLBOX_H-mCircles[0]->mRadius*2.f-16.f)).str());
+        float newX = mPosWorld.x-TOOLBOX_W/2;
+        float newY = mPosWorld.y-TOOLBOX_H-mCircles[0]->mRadius*2.f-16.f;
+        
+        string prm = (format("position='%d %d'") % 
+                      (math<int>::clamp(newX,0,getWindowWidth())) % 
+                      (math<int>::clamp(newY,0,getWindowHeight()))).str();
+        
+        printf("%s\n",prm.c_str());
+        
+        mpParams->setOptions("", prm);
     }
 }
 
@@ -71,5 +79,6 @@ void Circles7::onSelected()
 
 void Circles7::onUnselected()
 {
-    
+    if (mpParams)
+        mpParams->hide();
 }

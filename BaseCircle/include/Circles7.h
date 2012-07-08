@@ -22,6 +22,8 @@ namespace mPatterns {
 		vector<PrimitiveStyleWeakPtr> mStyles;
 		vector<PrimitiveStyleWeakPtr> mAxisesStyles;
 
+        vector<CircleWeakPtr>& getCircles() {return mCircles;};
+        
 	protected:
 		vector<CircleWeakPtr> mCircles;		
 		cinder::params::InterfaceGl* mpParams;

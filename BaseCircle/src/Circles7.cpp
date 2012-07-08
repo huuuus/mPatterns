@@ -14,7 +14,9 @@ Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) :
 	for (int i=0;i<(need7Styles ? 7 : 2);i++) {
 		// circle styles
 		PrimitiveStyle *s = new PrimitiveStyle;
-		s->mMainColor = (i==0) ? ColorA8u(255,0,0,113) : ColorA8u(255,0,255,113);		
+		s->mMainColor = (i==0) ? ColorA8u(255,0,0,113) : ColorA8u(255,0,255,113);
+		s->mStroke = math<int>::clamp(radius/8+2,1,1000);
+        
 		mStyles.push_back(s);
 		// axises styles
 		s = new PrimitiveStyle;

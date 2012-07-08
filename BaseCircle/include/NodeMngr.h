@@ -12,7 +12,7 @@ namespace mPatterns {
         
         static NodeMngr& instance() {static NodeMngr inst; return inst;};
         static CircleWeakPtr createCircle(Vec2f pos, float r, NodeWeakPtr pParent = mpRoot, PrimitiveStyle* s=0);
-		Circles7WeakPtr createCircles7(float radius, bool need7Styles);
+		Circles7WeakPtr createCircles7(float radius, bool need7Styles, NodeWeakPtr pParent=mpRoot);
         
         static RootNodeWeakPtr mpRoot;
         

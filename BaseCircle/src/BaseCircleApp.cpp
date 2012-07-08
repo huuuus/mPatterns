@@ -3,6 +3,7 @@
 #include "cinder/gl/gl.h"
 #include "GraphicAppState.h"
 #include "TwoCircles7State.h"
+#include "Growth.h"
 
 using namespace mPatterns;
 using namespace std;
@@ -51,10 +52,13 @@ void	BaseCircleApp::mouseWheel( MouseEvent event ) {
      if (mpCurSt) mpCurSt->mouseWheel(event);
 }
 
+const string initialState("GROWTH");
+const Vec2f SCREEN_SIZE(800,600);
+
 void BaseCircleApp::prepareSettings( Settings *settings ) 
 {
-	settings->setWindowSize( 1024, 768 );
-	settings->setWindowPos( 32, 96 );
+	settings->setWindowSize( SCREEN_SIZE.x, SCREEN_SIZE.y );
+	settings->setWindowPos( 0, 0 );
 	settings->setFullScreen( false );
 	settings->setResizable( true );
 	settings->setFrameRate( 60.0f );
@@ -63,8 +67,7 @@ void BaseCircleApp::prepareSettings( Settings *settings )
 void BaseCircleApp::setup()
 {
     mStates["TWO_CIRCLES_7"] = TwoCircles7StatePtr(new TwoCircles7State());
-
-    string initialState("TWO_CIRCLES_7");
+    mStates["GROWTH"] = GrowthStatePtr(new GrowthState());
     
     mpCurSt = getSt(initialState);
     mpCurSt->init();

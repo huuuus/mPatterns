@@ -64,6 +64,7 @@
 		57875F4915AA06F1004DBD5C /* GraphicAppState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphicAppState.h; path = ../include/GraphicAppState.h; sourceTree = "<group>"; };
 		57875F4A15AA07F5004DBD5C /* TwoCircles7State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwoCircles7State.h; path = ../include/TwoCircles7State.h; sourceTree = "<group>"; };
 		57875F4B15AA0804004DBD5C /* TwoCircles7State.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwoCircles7State.cpp; path = ../src/TwoCircles7State.cpp; sourceTree = "<group>"; };
+		57875F5515AA18A5004DBD5C /* Growth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Growth.h; path = ../include/Growth.h; sourceTree = "<group>"; };
 		579AF926158692D4001E5C36 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Node.cpp; path = ../src/Node.cpp; sourceTree = "<group>"; };
 		579AF927158692D4001E5C36 /* NodeMngr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NodeMngr.cpp; path = ../src/NodeMngr.cpp; sourceTree = "<group>"; };
 		579AF928158692D4001E5C36 /* Style.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Style.cpp; path = ../src/Style.cpp; sourceTree = "<group>"; };
@@ -170,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				57875F4A15AA07F5004DBD5C /* TwoCircles7State.h */,
+				57875F5515AA18A5004DBD5C /* Growth.h */,
 				57875F4915AA06F1004DBD5C /* GraphicAppState.h */,
 				57875F4115AA04DB004DBD5C /* hasPickableNode.h */,
 				57875F4215AA04DB004DBD5C /* IMouseHandler.h */,

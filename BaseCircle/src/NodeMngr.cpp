@@ -12,8 +12,8 @@ CircleWeakPtr NodeMngr::createCircle(Vec2f pos, float r, NodeWeakPtr pParent, Pr
 	return pCircle;
 }
 
-Circles7WeakPtr NodeMngr::createCircles7(float radius, bool need7Styles) {
-	Circles7WeakPtr pC(new Circles7(radius, mpRoot, need7Styles));
+Circles7WeakPtr NodeMngr::createCircles7(float radius, bool need7Styles, NodeWeakPtr pParent) {
+	Circles7WeakPtr pC(new Circles7(radius, pParent, need7Styles));
 	return pC;
 }
 
@@ -40,7 +40,7 @@ CircleWeakPtr Circle::spawnCircleOnAxis(unsigned int axis, float distInRadiusUni
 	Vec2f dir = mAxises[axis]->mDir;
 	CircleWeakPtr pC = NODE_MGR.createCircle( dir * distInRadiusUnits * mRadius, radius, this, s);
 	pC->setAxis(mAxises[axis]);
-	pC->setStyle(s ? s : getStyle());    
+	pC->setStyle(s ? s : getStyle()); 
 	return pC;
 }
 

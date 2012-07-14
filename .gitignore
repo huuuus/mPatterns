@@ -13,9 +13,11 @@ BaseCircle/vc10/ipch/
 *.log
 .DS_Store
 *.xc*
-*.embed
+*.exe.embed.manifest
+*.exe.embed.manifest.res
+*.exe.intermediate.manifest
 *.unsuccessfulbuild
 *.idb
 *.pdb
 *.ipch
-
+*.lastbuildstate

@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="mPatterns::Axis" Collapsed="true">
+    <Position X="4" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAIAAAIAAQQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Axis.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::Circle" Collapsed="true">
+    <Position X="6.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAASAAIAAAAAAQwACAAQICAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Circle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::Circles7" Collapsed="true">
+    <Position X="10.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAEJAAAAAIAAIAAEQQQAAAAAACAAABAAAE=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Circles7.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::Pickable" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Node.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::Selectable" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQABAAAAAAAAAAAIAAEAQAAAAAAACAABAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Node.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::Node&lt;CPos&gt;" Collapsed="true">
+    <Position X="9.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAEBJAAAAAARBAAAAAAIAAAAEAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Node.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::NodeNotSelectable" Collapsed="true">
+    <Position X="8" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAEAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Node.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::NodeMngr" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACEACAAAAAAAAQAAAIAAAAAIABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\NodeMngr.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::RootNode" Collapsed="true">
+    <Position X="8" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAIAAAAAAQQAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\RootNode.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::hasStyle" Collapsed="true">
+    <Position X="6" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAACBAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Style.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::PrimitiveStyle" Collapsed="true">
+    <Position X="3.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAAAIAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Style.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::AppState" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAIAEAAAAAAEAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\AppState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::IColorAnimator" Collapsed="true">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\ColorAnimator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::colorAnimator&lt;colorAnimatorTechnique&gt;" Collapsed="true">
+    <Position X="13.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAACCAAAAAAAAAAAABAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\ColorAnimator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::softHueTechnique" Collapsed="true">
+    <Position X="15.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\ColorAnimator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::GraphicAppState" Collapsed="true">
+    <Position X="3.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIAAAAAASAAAAAAAAAAAAEAQQAAAgAIAAAAAgAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\GraphicAppState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::Growthable" Collapsed="true">
+    <Position X="10.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAACAAAAAAACAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Growth.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::GrowthableCircle7" Collapsed="true">
+    <Position X="10.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAIAAAAAAAAAAAAAACAAAAAAACAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Growth.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::GrowthState" Collapsed="true">
+    <Position X="2.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAIAAAAAAAAAAAIAEAAAAAAEAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Growth.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::hasPickableNode" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAQAAAAAAAAAAAAAAQAAAEBAAAAAAAAgAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\hasPickableNode.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::IMouseHandler" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAQAAAAAAAAAACAAAQAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\IMouseHandler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mPatterns::TwoCircles7State" Collapsed="true">
+    <Position X="4.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAABAAAIIAAAAAAAAAgAIAEAAAAAAkAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\TwoCircles7State.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseCircleApp" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAQAAAAQAAQAQgAAAICAAAQAAAAiAAAAAAAAAAEAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\src\BaseCircleApp.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Typedef Name="mPatterns::const_itNodeVec" Collapsed="true">
+    <Position X="15.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Node.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="mPatterns::const_itNodeList" Collapsed="true">
+    <Position X="10.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Node.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="mPatterns::t_IColorAnimatorVec" Collapsed="true">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\ColorAnimator.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="mPatterns::t_softHueAnimator" Collapsed="true">
+    <Position X="13.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\ColorAnimator.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="mPatterns::NODE_TYPE" Collapsed="true">
+    <Position X="10.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAACAAAAAAAAAIAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>D:\PROG\mPatterns\BaseCircle\include\Node.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

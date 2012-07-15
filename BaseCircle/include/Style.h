@@ -5,6 +5,7 @@ namespace mPatterns {
 	const cinder::ColorAf DEFAULT_COLOR2 = ColorAf(0.5,0.5,0.5,1.0);
 
     DECL_WEAK_PTR(PrimitiveStyle)
+	DECL_SHARED_PTR(PrimitiveStyle)
     
     class hasStyle {
     public:

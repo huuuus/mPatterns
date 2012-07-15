@@ -4,6 +4,11 @@ namespace mPatterns {
     class RootNode : public NodeNotSelectable {
     public:
         RootNode() : NodeNotSelectable(Vec2f(0,0), NULL) {};
+		virtual ~RootNode() 
+		{
+			DEBUG_MSG(L"~RootNode\n");
+		};
+
         virtual void draw() const {};
         virtual enum NODE_TYPE getType() {return NT_ROOT;};
         virtual PrimitiveStyle* getStyle() const {return 0;};

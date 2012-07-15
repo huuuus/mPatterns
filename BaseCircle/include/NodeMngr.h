@@ -9,6 +9,7 @@ namespace mPatterns {
     class NodeMngr {
     public:
         NodeMngr() {};
+		~NodeMngr() {delete mpRoot;};
         
         static NodeMngr& instance() {static NodeMngr inst; return inst;};
         static CircleWeakPtr createCircle(Vec2f pos, float r, NodeWeakPtr pParent = mpRoot, PrimitiveStyle* s=0);

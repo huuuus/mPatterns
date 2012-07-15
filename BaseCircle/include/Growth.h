@@ -60,7 +60,7 @@ namespace mPatterns {
         virtual void init() {
             GraphicAppState::init();
             
-            mpRootCrystal.reset(new GrowthableCircle7(20.f, NODE_MGR.mpRoot));
+            mpRootCrystal = new GrowthableCircle7(20.f, NODE_MGR.mpRoot);
             mpRootCrystal->mPos = Vec2f(getWindowWidth()/2,getWindowHeight()/2);
             //mStyles
             
@@ -85,7 +85,7 @@ namespace mPatterns {
         
         //virtual void mouseWheel( MouseEvent event );
         
-        GrowthableCircle7Ptr mpRootCrystal;
+        GrowthableCircle7WeakPtr mpRootCrystal;
     };
     
 };

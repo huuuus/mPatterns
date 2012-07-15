@@ -21,7 +21,7 @@ class BaseCircleApp : public AppBasic {
 	void mouseWheel( MouseEvent event );
 
 	void prepareSettings( Settings *settings );	
-    
+
 protected:
     AppStateWeakPtr getSt(string n) {
         return mStates[n].get();
@@ -49,16 +49,16 @@ void	BaseCircleApp::mouseMove( MouseEvent event )
 }
 
 void	BaseCircleApp::mouseWheel( MouseEvent event ) {
-     if (mpCurSt) mpCurSt->mouseWheel(event);
+    if (mpCurSt) mpCurSt->mouseWheel(event);
 }
 
-const string initialState("GROWTH");
+const string initialState(/*"TWO_CIRCLES_7"*/"GROWTH");
 const Vec2f SCREEN_SIZE(800,600);
 
 void BaseCircleApp::prepareSettings( Settings *settings ) 
 {
 	settings->setWindowSize( SCREEN_SIZE.x, SCREEN_SIZE.y );
-	settings->setWindowPos( 0, 0 );
+	settings->setWindowPos( 64, 64 );
 	settings->setFullScreen( false );
 	settings->setResizable( true );
 	settings->setFrameRate( 60.0f );
@@ -85,6 +85,5 @@ void BaseCircleApp::draw()
     if (mpCurSt)
         mpCurSt->draw();
 }
-
 
 CINDER_APP_BASIC( BaseCircleApp, RendererGl )

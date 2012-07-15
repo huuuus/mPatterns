@@ -12,15 +12,20 @@ namespace mPatterns {
 	class Circles7 : public Node<Vec2f> {	
 	public:
 		Circles7(float radius, NodeWeakPtr pParent, bool need7Styles=false);
-		vector<PrimitiveStyleWeakPtr>& getStyles() {return mStyles;};
+
+		virtual ~Circles7() {
+			DEBUG_MSG(L"delete a Circles7 %x\n",(int)(this));
+		};
+
+		vector<PrimitiveStylePtr>& getStyles() {return mStyles;};
 		virtual enum NODE_TYPE getType() {return NT_CIRCLES7;};
 		virtual void draw() const;
 		
 		virtual void spawnParameters();
 		virtual bool pick(Vec2f pickPos) const {return isInRadius(pickPos, mCircles[0]->mRadius*2.f);};
 
-		vector<PrimitiveStyleWeakPtr> mStyles;
-		vector<PrimitiveStyleWeakPtr> mAxisesStyles;
+		vector<PrimitiveStylePtr> mStyles;
+		vector<PrimitiveStylePtr> mAxisesStyles;
 
         vector<CircleWeakPtr>& getCircles() {return mCircles;};
         

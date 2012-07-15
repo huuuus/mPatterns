@@ -17,16 +17,16 @@ Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) :
 		s->mMainColor = (i==0) ? ColorA8u(255,0,0,113) : ColorA8u(255,0,255,113);
 		s->mStroke = math<int>::clamp(radius/8+2,1,1000);
         
-		mStyles.push_back(s);
+		mStyles.push_back(PrimitiveStylePtr(s));
 		// axises styles
 		s = new PrimitiveStyle;
 		s->mMainColor = (i==0) ? ColorA8u(174,119,94,24) : ColorA8u(174,119,94,24);
-		mAxisesStyles.push_back(s);
+		mAxisesStyles.push_back(PrimitiveStylePtr(s));
 	}
 
 	// main circle	
 	mCircles.push_back(
-		NODE_MGR.createCircle(Vec2f(0,0), radius, this, mStyles[0]));
+		NODE_MGR.createCircle(Vec2f(0,0), radius, this, mStyles[0].get()));
 	CircleWeakPtr pMain = mCircles[0];
 
 	// add 3 axises to main circle, and 2 circles per axis
@@ -34,10 +34,10 @@ Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) :
 	const float D_CENTER = 1.f;
 	for (int i=0;i<3;i++)
 	{
-		pMain->addAxis(axisAngles[i], mAxisesStyles[0]);
+		pMain->addAxis(axisAngles[i], mAxisesStyles[0].get());
 		for (int sign=-1;sign<2;sign+=2)
 			mCircles.push_back(
-				pMain->spawnCircleOnAxis(i, sign * D_CENTER, pMain->mRadius, mStyles[1]));
+				pMain->spawnCircleOnAxis(i, sign * D_CENTER, pMain->mRadius, mStyles[1].get()));
 	}
 }
 
@@ -67,7 +67,7 @@ void Circles7::draw() const {
                       (math<int>::clamp(newX,0,getWindowWidth())) % 
                       (math<int>::clamp(newY,0,getWindowHeight()))).str();
         
-        printf("%s\n",prm.c_str());
+        DEBUG_MSG(L"%s\n",prm.c_str());
         
         mpParams->setOptions("", prm);
     }

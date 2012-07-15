@@ -24,6 +24,10 @@ namespace mPatterns {
         bool m_isSel;
     public:
         Selectable() {m_isSel=false;};
+		virtual ~Selectable() {			
+			DEBUG_MSG(L"delete a Selectable %x\n",(int)(this));
+		};
+
         virtual bool pick(Vec2f pickPos) const = 0;  
 
         virtual void notifySelected()
@@ -47,6 +51,10 @@ namespace mPatterns {
 				pParent->addChild(NodePtr(this));
         };
         
+		virtual ~Node() {
+			DEBUG_MSG(L"delete a node %x\n",(int)(this));
+		};
+
         CPos mPos;
         NodeWeakPtr mpParent;
         list<NodePtr> mChilds;

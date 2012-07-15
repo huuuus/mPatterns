@@ -23,10 +23,44 @@ using boost::format;
 
 #define M_PIf (3.14159265358979323846f)
 
+// -- to debug mem leaks
+#ifdef _DEBUG
+   #ifndef DBG_NEW
+      #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+      #define new DBG_NEW
+   #endif
+#endif  // _DEBUG
+
+// -- log helper for win32
+#include <stdio.h>
+#include <stdarg.h>
+#include <ctype.h>
+#include <wchar.h>
+
 #ifdef WIN32
-    #define DEBUG_OUT(s) OutputDebugStringA(s)
+	inline void __cdecl DEBUG_MSG(const wchar_t *format, ...)
+	{
+		wchar_t buf[4096], *p = buf;
+	va_list args;
+	int     n;
+
+			va_start(args, format);
+			n = _vsnwprintf(p, sizeof buf - 3, format, args); // buf-3 is room for CR/LF/NUL
+			va_end(args);
+
+			p += (n < 0) ? sizeof buf - 3 : n;
+
+			while ( p > buf  &&  isspace(p[-1]) )
+					*--p = '\0';
+
+			*p++ = '\r';
+			*p++ = '\n';
+			*p   = '\0';
+
+			OutputDebugString(buf);
+	}
 #else
-    #define DEBUG_OUT(s)
-#endif
+	inline void __cdecl DEBUG_MSG(const wchar_t *format, ...) {};
+#endif 
 
 #endif

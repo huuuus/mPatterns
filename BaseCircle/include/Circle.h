@@ -11,6 +11,10 @@ namespace mPatterns {
                 mRadius = r;
             };
         
+			virtual ~Circle() {
+				DEBUG_MSG(L"delete a Circle %x\n",(int)(this));
+			};
+
             float mRadius;
         
             virtual void draw() const;

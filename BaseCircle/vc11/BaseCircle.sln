@@ -1,8 +1,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 11
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseCircle", "BaseCircle.vcxproj", "{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE} = {92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cinder", "..\..\..\cinder_0.8.4_vc2010\vc10\cinder.vcxproj", "{92B5BE70-DCAA-40E4-92D8-CC2B95AA28BE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApplication1", "..\ConsoleApplication1\ConsoleApplication1.vcxproj", "{0DC8259B-4098-FD23-CA5A-BE321AB04FB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,6 +15,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DC8259B-4098-FD23-CA5A-BE321AB04FB0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0DC8259B-4098-FD23-CA5A-BE321AB04FB0}.Debug|Win32.Build.0 = Debug|Win32
+		{0DC8259B-4098-FD23-CA5A-BE321AB04FB0}.Release|Win32.ActiveCfg = Release|Win32
+		{0DC8259B-4098-FD23-CA5A-BE321AB04FB0}.Release|Win32.Build.0 = Release|Win32
 		{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}.Debug|Win32.ActiveCfg = Debug|Win32
 		{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}.Debug|Win32.Build.0 = Debug|Win32
 		{74202EDD-91D2-4D2A-B0B6-355CEB16E6BE}.Release|Win32.ActiveCfg = Release|Win32

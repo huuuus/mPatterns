@@ -10,17 +10,24 @@ public:
     IColorAnimator();
     static t_IColorAnimatorVec mColorAnimators;
     virtual void tick() = 0;
+    static void tickAll();
 };
 
 template<class colorAnimatorTechnique>
 class colorAnimator : public IColorAnimator {
 public:
-    colorAnimator(cinder::ColorAf* pCol);
+    colorAnimator(cinder::ColorAf* pCol):
+        IColorAnimator()
+    {
+        mpCol = pCol;
+    };
     
     cinder::ColorAf* mpCol;
     
-    virtual void tick();
-    static void tickAll();
+    virtual void tick() {
+        mTech.tick(mpCol);
+    };
+    
     colorAnimatorTechnique mTech;
 };
 

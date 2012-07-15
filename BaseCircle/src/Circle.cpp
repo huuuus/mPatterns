@@ -5,15 +5,7 @@
 #include "Circle.h"
 
 using namespace mPatterns;
-/*
-Circle::Circle(Vec2f pos, float r, NodeWeakPtr pParent) :
-	Node(pos, pParent)
-{
-	mpAxis = 0;
-	mPos = pos;
-	mRadius = r;
-};
-*/
+
 void Circle::draw() const {
 	if (mStyle)
 		gl::color( mStyle->mMainColor );

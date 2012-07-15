@@ -7,6 +7,7 @@
 
 #include "GraphicAppState.h"
 #include "TwoCircles7State.h"
+#include "ColorAnimator.h"
 
 using namespace mPatterns;
 using namespace params;
@@ -23,6 +24,8 @@ void TwoCircles7State::init() {
 	mpC7_2 = NODE_MGR.createCircles7(32.f, false);
 	pos.x += 256;
 	mpC7_2->mPos = pos;
+    
+    t_softHueAnimator* pTest = new t_softHueAnimator(&(mpC7_1->mStyles[0]->mMainColor));
     
     initAnimator();
 }
@@ -41,6 +44,8 @@ void TwoCircles7State::deInit() {
 }
 
 void TwoCircles7State::update(float fDt) {
+    
+    IColorAnimator::tickAll();
     mpC7_1->mPos = mAnimatedPos;
     GraphicAppState::postUpdate();
 }

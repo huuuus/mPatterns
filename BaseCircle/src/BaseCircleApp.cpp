@@ -52,7 +52,7 @@ void	BaseCircleApp::mouseWheel( MouseEvent event ) {
      if (mpCurSt) mpCurSt->mouseWheel(event);
 }
 
-const string initialState("GROWTH");
+const string initialState("TWO_CIRCLES_7");
 const Vec2f SCREEN_SIZE(800,600);
 
 void BaseCircleApp::prepareSettings( Settings *settings ) 

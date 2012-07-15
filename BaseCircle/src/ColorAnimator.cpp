@@ -8,9 +8,20 @@ using namespace app;
 t_IColorAnimatorVec IColorAnimator::mColorAnimators;
 
 IColorAnimator::IColorAnimator() {
-    mColorAnimators.push_back(IColorAnimatorPtr(this));
+    mColorAnimators.push_back(this);
 };
 
+IColorAnimator::~IColorAnimator()
+{
+	t_IColorAnimatorVec::iterator s,e,f;
+	s = mColorAnimators.begin();
+	e = mColorAnimators.end();
+	f = std::find(s, e, this);
+	if (f != e) {
+		mColorAnimators.erase(f);
+	}
+}
+    
 void IColorAnimator::tickAll() 
 {
     t_IColorAnimatorVec::iterator it;

@@ -3,11 +3,12 @@ namespace mPatterns {
 DECL_WEAK_PTR(IColorAnimator)
 DECL_SHARED_PTR(IColorAnimator)
 
-typedef std::vector<IColorAnimatorPtr> t_IColorAnimatorVec;
+typedef std::vector<IColorAnimator*> t_IColorAnimatorVec;
 
 class IColorAnimator {
 public:
     IColorAnimator();
+	virtual ~IColorAnimator();
     static t_IColorAnimatorVec mColorAnimators;
     virtual void tick() = 0;
     static void tickAll();
@@ -21,7 +22,7 @@ public:
     {
         mpCol = pCol;
     };
-    
+
     cinder::ColorAf* mpCol;
     
     virtual void tick() {

@@ -22,3 +22,4 @@ BaseCircle/vc10/ipch/
 *.pdb
 *.ipch
 *.lastbuildstate
+*.bak

@@ -2,6 +2,7 @@
 #include "cinder/params/Params.h"
 #include "cinder/gl/gl.h"
 #include "GraphicAppState.h"
+#include "ColorAnimator.h"
 
 using namespace mPatterns;
 using namespace params;
@@ -43,4 +44,5 @@ void GraphicAppState::postDraw() {
 
 void GraphicAppState::postUpdate() {
     NODE_MGR.updateNodes();
+	IColorAnimator::tickAll();
 }

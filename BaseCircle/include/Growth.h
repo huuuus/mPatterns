@@ -1,4 +1,5 @@
 #include "cinder/rand.h"
+#include "ColorAnimator.h"
 
 namespace mPatterns {
 
@@ -16,7 +17,9 @@ namespace mPatterns {
         GrowthableCircle7(float radius, NodeWeakPtr pParent) : 
             Circles7(radius, pParent, false)
         {
-            
+			vector<PrimitiveStylePtr>::const_iterator it;
+			for (it=mStyles.begin();it!=mStyles.end();it++)
+				new t_softHueAnimator(&((*it)->mMainColor));
         };
         
         virtual float getRadius() {
@@ -31,6 +34,8 @@ namespace mPatterns {
             Vec2f dir(cos(angleRad), sin(angleRad));
             pC7->mPos = dir * (childRadius*2.f + getRadius());
             pC7->randomize(0,0);
+
+			new t_softHueAnimator(&(pC7->mStyles[0]->mMainColor));
             
             return true;
         };

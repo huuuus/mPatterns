@@ -60,7 +60,7 @@ using boost::format;
 			OutputDebugString(buf);
 	}
 #else
-	inline void __cdecl DEBUG_MSG(const wchar_t *format, ...) {};
+	inline void DEBUG_MSG(const wchar_t *format, ...) {};
 #endif 
 
 #endif

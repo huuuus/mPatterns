@@ -14,7 +14,7 @@ namespace mPatterns {
 		Circles7(float radius, NodeWeakPtr pParent, bool need7Styles=false);
 
 		virtual ~Circles7() {
-			DEBUG_MSG(L"delete a Circles7 %x\n",(int)(this));
+			DEBUG_MSG(L"delete a Circles7 %x\n",(int)(this));			
 		};
 
 		vector<PrimitiveStylePtr>& getStyles() {return mStyles;};
@@ -31,7 +31,7 @@ namespace mPatterns {
         
 	protected:
 		vector<CircleWeakPtr> mCircles;		
-		cinder::params::InterfaceGl* mpParams;
+		 boost::shared_ptr<cinder::params::InterfaceGl> mpParams;
         
         virtual void onSelected();
         virtual void onUnselected();

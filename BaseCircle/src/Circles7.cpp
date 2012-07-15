@@ -8,8 +8,7 @@ using namespace app;
 using namespace cinder::params;
 
 Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) : 
-	Node<Vec2f>(Vec2f(0,0), pParent),
-	mpParams(0)
+	Node<Vec2f>(Vec2f(0,0), pParent)
 {	
 	for (int i=0;i<(need7Styles ? 7 : 2);i++) {
 		// circle styles
@@ -45,10 +44,10 @@ const int TOOLBOX_W = 200;
 const int TOOLBOX_H = (int)(200*0.9);
 
 void Circles7::spawnParameters() {	
-	if (!mpParams) {
+	if (!mpParams.get()) {
 		unsigned long id = (unsigned long)(this);
 		string sId = (format("7CIRCLE_%d") % id).str();
-		mpParams = new InterfaceGl(sId, Vec2i(TOOLBOX_W,TOOLBOX_H));	
+		mpParams.reset(new InterfaceGl(sId, Vec2i(TOOLBOX_W,TOOLBOX_H)));
 
 		mpParams->addParam( "CENTRAL", &mStyles[0]->mMainColor, "" );
 		mpParams->addParam( "AXISES", &mAxisesStyles[0]->mMainColor, "" );
@@ -59,17 +58,17 @@ void Circles7::spawnParameters() {
 }
 
 void Circles7::draw() const {
-    if (mpParams) {
+    if (mpParams.get()) {
         float newX = mPosWorld.x-TOOLBOX_W/2;
         float newY = mPosWorld.y-TOOLBOX_H-mCircles[0]->mRadius*2.f-16.f;
         
-        string prm = (format("position='%d %d'") % 
-                      (math<int>::clamp(newX,0,getWindowWidth())) % 
-                      (math<int>::clamp(newY,0,getWindowHeight()))).str();
+        std::string prm = (format("position='%d %d'") % 
+						  (math<int>::clamp(newX,0,getWindowWidth())) % 
+						  (math<int>::clamp(newY,0,getWindowHeight()))).str();
         
-        DEBUG_MSG(L"%s\n",prm.c_str());
+        DEBUG_MSG(L"%S\n",prm.c_str());
         
-        mpParams->setOptions("", prm);
+		mpParams->setOptions("", std::string(prm.c_str()));
     }
 }
 

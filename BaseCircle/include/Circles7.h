@@ -5,7 +5,6 @@ namespace cinder {
 }
 
 // 7 circles unity
-
 namespace mPatterns {
 	DECL_WEAK_PTR(Circles7)
 

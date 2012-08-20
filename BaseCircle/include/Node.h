@@ -25,6 +25,7 @@ namespace mPatterns {
     public:
         Selectable() {m_isSel=false;};
 		virtual ~Selectable() {			
+			DEBUG_MSG(L"delete a Selectable %x\n",(long)(this));
 		};
 
         virtual bool pick(Vec2f pickPos) const = 0;  
@@ -51,6 +52,7 @@ namespace mPatterns {
         };
         
 		virtual ~Node() {
+			DEBUG_MSG(L"delete a node %x\n",(long)(this));
 		};
 
 		void deleteChilds() {

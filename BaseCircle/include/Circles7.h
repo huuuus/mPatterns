@@ -13,6 +13,7 @@ namespace mPatterns {
 		Circles7(float radius, NodeWeakPtr pParent, bool need7Styles=false);
 
 		virtual ~Circles7() {
+			DEBUG_MSG(L"delete a Circles7 %x\n",(long)(this));			
 		};
 
 		vector<PrimitiveStylePtr>& getStyles() {return mStyles;};
@@ -26,6 +27,8 @@ namespace mPatterns {
 		vector<PrimitiveStylePtr> mAxisesStyles;
 
         vector<CircleWeakPtr>& getCircles() {return mCircles;};
+        
+        void changeRadius(float r);
         
 	protected:
 		vector<CircleWeakPtr> mCircles;		

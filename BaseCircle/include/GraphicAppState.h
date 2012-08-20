@@ -10,7 +10,7 @@ namespace mPatterns {
         virtual void init();
         void postUpdate();
         void preDraw();
-        void postDraw();
+        void postDraw(bool drawScene=true);
         virtual void mouseDown( MouseEvent event );
         virtual void mouseUp( MouseEvent event );    
         virtual void mouseMove( MouseEvent event );

@@ -76,6 +76,7 @@
 		579AF9331587D1BE001E5C36 /* Axis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Axis.cpp; path = ../src/Axis.cpp; sourceTree = "<group>"; };
 		579AF9351587D49A001E5C36 /* RootNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootNode.h; path = ../include/RootNode.h; sourceTree = "<group>"; };
 		579AF9361587D4A5001E5C36 /* RootNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RootNode.cpp; path = ../src/RootNode.cpp; sourceTree = "<group>"; };
+		57A40EBF15C559EE00344A56 /* GSL_macTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSL_macTests.h; path = ../include/GSL_macTests.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* mPatternsMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mPatternsMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -172,6 +173,7 @@
 			children = (
 				57875F4A15AA07F5004DBD5C /* TwoCircles7State.h */,
 				57875F5515AA18A5004DBD5C /* Growth.h */,
+				57A40EBF15C559EE00344A56 /* GSL_macTests.h */,
 				57875F4915AA06F1004DBD5C /* GraphicAppState.h */,
 				57875F4115AA04DB004DBD5C /* hasPickableNode.h */,
 				57875F4215AA04DB004DBD5C /* IMouseHandler.h */,
@@ -305,9 +307,12 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
+				OTHER_LDFLAGS = (
+					"\"$(CINDER_PATH)/lib/libcinder_d.a\"",
+					/usr/local/lib/libgsl.a,
+				);
 				PRODUCT_NAME = mPatternsMac;
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = i386;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -334,10 +339,13 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
+				OTHER_LDFLAGS = (
+					"\"$(CINDER_PATH)/lib/libcinder.a\"",
+					/usr/local/lib/libgsl.a,
+				);
 				PRODUCT_NAME = mPatternsMac;
 				STRIP_INSTALLED_PRODUCT = YES;
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = i386;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -346,14 +354,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CINDER_PATH = ../../../Cinder;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/boost\"",
+					/Users/victor/Documents/PROG/gsl_mac_includes,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include /Users/victor/Documents/PROG/gsl_mac_includes";
 			};
 			name = Debug;
 		};
@@ -361,14 +372,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CINDER_PATH = ../../../Cinder;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/boost\"",
+					/Users/victor/Documents/PROG/gsl_mac_includes,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include /Users/victor/Documents/PROG/gsl_mac_includes";
 			};
 			name = Release;
 		};

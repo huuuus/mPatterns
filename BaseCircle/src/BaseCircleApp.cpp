@@ -4,6 +4,7 @@
 #include "GraphicAppState.h"
 #include "TwoCircles7State.h"
 #include "Growth.h"
+#include "GSL_macTests.h"
 
 using namespace mPatterns;
 using namespace std;
@@ -52,9 +53,9 @@ void	BaseCircleApp::mouseWheel( MouseEvent event ) {
     if (mpCurSt) mpCurSt->mouseWheel(event);
 }
 
-const string initialState("GROWTH");
+const string initialState("GSL_MAC_TEST");
 
-const Vec2f SCREEN_SIZE(800,600);
+const Vec2f SCREEN_SIZE(384,384);
 
 void BaseCircleApp::prepareSettings( Settings *settings ) 
 {
@@ -69,6 +70,7 @@ void BaseCircleApp::setup()
 {
     mStates["TWO_CIRCLES_7"] = TwoCircles7StatePtr(new TwoCircles7State());
     mStates["GROWTH"] = GrowthStatePtr(new GrowthState());
+    mStates["GSL_MAC_TEST"] = GSL_macTestStatePtr(new GSL_macTestState());
     
     mpCurSt = getSt(initialState);
     mpCurSt->init();

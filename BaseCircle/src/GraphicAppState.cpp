@@ -37,8 +37,9 @@ void GraphicAppState::preDraw() {
     gl::clear( Color( mBgColor ) );
 }
 
-void GraphicAppState::postDraw() {
-	NODE_MGR.draw();
+void GraphicAppState::postDraw(bool drawScene) {
+    if (drawScene)
+        NODE_MGR.draw();
     params::InterfaceGl::draw();
 }
 

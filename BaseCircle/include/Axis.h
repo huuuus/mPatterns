@@ -5,7 +5,8 @@ namespace mPatterns {
     public:
         Axis(Vec2f pos, float angle, NodeWeakPtr pParent);
 
-		virtual ~Axis() {			
+		virtual ~Axis() {
+			DEBUG_MSG(L"delete a Axis %x\n",(long)(this));
 		};
 
         virtual void draw() const;

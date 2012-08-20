@@ -7,6 +7,9 @@ using namespace std;
 using namespace app;
 using namespace cinder::params;
 
+const float axisAngles[3] = {M_PIf/2.f, M_PIf/6.f, M_PIf - M_PIf/6.f};
+const float D_CENTER = 1.f;
+
 Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) : 
 	Node<Vec2f>(Vec2f(0,0), pParent)
 {	
@@ -29,8 +32,6 @@ Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) :
 	CircleWeakPtr pMain = mCircles[0];
 
 	// add 3 axises to main circle, and 2 circles per axis
-	const float axisAngles[3] = {M_PIf/2.f, M_PIf/6.f, M_PIf - M_PIf/6.f};
-	const float D_CENTER = 1.f;
 	for (int i=0;i<3;i++)
 	{
 		pMain->addAxis(axisAngles[i], mAxisesStyles[0].get());
@@ -38,6 +39,18 @@ Circles7::Circles7(float radius, NodeWeakPtr pParent, bool need7Styles) :
 			mCircles.push_back(
 				pMain->spawnCircleOnAxis(i, sign * D_CENTER, pMain->mRadius, mStyles[1].get()));
 	}
+}
+
+void Circles7::changeRadius(float r) {
+    vector<CircleWeakPtr>::iterator it = mCircles.begin();
+    (*it)->mRadius = r;
+    it++;
+    int cur = 0;
+    for (;it!=mCircles.end();++it) {
+        (*it)->mRadius = r;
+        (*it)->positionAlongAxis(((cur&1) ? 1.f : -1.f)*r*D_CENTER);
+        cur++;
+    }
 }
 
 const int TOOLBOX_W = 200;

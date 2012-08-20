@@ -14,7 +14,7 @@ namespace mPatterns {
         virtual void mouseDown( MouseEvent event );
         virtual void mouseUp( MouseEvent event );    
         virtual void mouseMove( MouseEvent event );
-        virtual void mouseWheel( MouseEvent event ) {};
+        virtual void mouseWheel( MouseEvent event ) {};                
         
     protected:
         params::InterfaceGl	mParams;

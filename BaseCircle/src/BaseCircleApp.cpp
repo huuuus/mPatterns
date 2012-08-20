@@ -23,6 +23,12 @@ class BaseCircleApp : public AppBasic {
 
 	void prepareSettings( Settings *settings );	
 
+    void shutdown() {
+        printf("shutdown()\n");
+        if (mpCurSt)
+            mpCurSt->deInit();
+    }
+    
 protected:
     AppStateWeakPtr getSt(string n) {
         return mStates[n].get();

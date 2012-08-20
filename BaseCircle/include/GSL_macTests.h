@@ -2,12 +2,12 @@
 #include "cinder/gl/texture.h"
 #include "cinder/timer.h"
 #include "cinder/Thread.h"
+#include <boost/thread/mutex.hpp>
 
 #include <stdio.h>
 #include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_multimin.h>
 #include <gsl/gsl_siman.h>
-
 
 #define _SCREEN_SIZE getWindowWidth(),getWindowHeight()
 #define _SCREEN_CENTER getWindowWidth()/2,getWindowHeight()/2
@@ -30,6 +30,8 @@ namespace mPatterns {
     class GSL_macTestState;
     GSL_macTestState* gSt;
     
+    mutex glMutex;
+
     class GSL_macTestState : public GraphicAppState {
         
     public:
@@ -57,12 +59,17 @@ namespace mPatterns {
             mDone = false;            
         };
         
+/*        ~GSL_macTestState() {
+            deInit();
+        }*/
+        
         virtual void deInit() {
-            
+            printf("deInit, unlock glmutex\n");
+            glMutex.unlock();
         };
         
         virtual void update(float fDt) {
-            GraphicAppState::postUpdate();
+//            GraphicAppState::postUpdate();
         };
       
         void renderToFbo(gl::Fbo &fbo, float posX, float posY, ColorAf c1, ColorAf c2, float r) {
@@ -195,56 +202,66 @@ namespace mPatterns {
         Timer mFrameTimer;
         Timer mStepTimer;
   
-        struct mySimpleProc
+        struct annealingProc
         {
-        public:
-            int _nbTimes;
-            
-            mySimpleProc(int nbTimes) {
-                _nbTimes = nbTimes;
+        public:            
+            annealingProc() {
             }
             
             void operator()() {
-                for (int i=0;i<_nbTimes;i++) {
+               /* for (int i=0;i<_nbTimes;i++) {
                     boost::posix_time::milliseconds duration(100);
                     printf("*** mySimpleProc %03d\n", i);
                     boost::this_thread::sleep(duration);                    
-                }
+                }*/
+                
+                test_annealing(0,0,32.f);
             }
         };
         
-        thread* m_testThread;
+        thread* m_annealingThread;
         
         virtual void draw() 
         {
-            mFrameTimer.stop();
-            //float dt = mFrameTimer.getSeconds();
-            //printf("dt=%.2f\n", dt);
-            mFrameTimer.start();
-            
+            //printf("one frame ...\n");
+
             // must init ref image at first frame            
             if (mFirstTime) {
                 testSimplex::initGPrms();  
                 initRefImage();
-                pTs = new testSimplex(this);
+                // pTs = new testSimplex(this);
                 mFirstTime = false;
                 
-//                test_annealing(0,0,32.f);
-                
-                m_testThread = new thread(mySimpleProc(50));
+                // test_annealing(0,0,32.f);
+            
+                //printf("*** create thread\n");
+                glMutex.lock();
+                m_annealingThread = 0;
+                m_annealingThread = new thread(annealingProc());
             }
-                                    
+            
+            //printf("main unlock\n");
+            glMutex.unlock();
+            
+            //mFrameTimer.stop();
+            //float dt = mFrameTimer.getSeconds();
+            //printf("dt=%.2f\n", dt);
+            //mFrameTimer.start();
+            
+            glMutex.lock();
+            //printf("main is drawing...\n");
+
             GraphicAppState::preDraw();
             {
                 
-                if (!mDone) {
+/*                if (!mDone) {
                     for (int i=0;i<1;i++) {
                         mStepTimer.start();
                             mDone = pTs->doOneStep(); 
                         mStepTimer.stop(); 
                         printf(" step time=%.2f\n", mStepTimer.getSeconds());
                     }                                           
-                }                
+                }*/
                 
                 displayFbo(mReferenceFbo, Color(0.5,0.5,0.5));
                                 
@@ -254,18 +271,22 @@ namespace mPatterns {
                 }
                 gl::disableAlphaBlending();
             }
-            GraphicAppState::postDraw(false); 
-            
-            if (m_testThread) {
-                if (m_testThread->joinable()) {
+            GraphicAppState::postDraw(false);
+            glMutex.unlock();
+            //printf("main finished drawing...\n");
+                        
+            if (m_annealingThread) {
+                if (m_annealingThread->joinable()) {
+                    //printf("main waiting...\n");
                     boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(1);
-                    m_testThread->timed_join(timeout);
+                    m_annealingThread->timed_join(timeout);
+                    glMutex.lock();
                 }
                 else {
                     printf("**** Thread finished !!!\n");
-                    delete m_testThread;
-                    
-                    m_testThread = new thread(mySimpleProc(Rand::randFloat()*300));
+                    delete m_annealingThread;
+                    m_annealingThread = 0;                    
+                    //m_annealingThread = new thread(mySimpleProc(Rand::randFloat()*300));
                 }
             }
         };
@@ -448,13 +469,14 @@ namespace mPatterns {
     /* set up parameters for this simulated annealing run */
 
     /* how many points do we try before stepping */
-    #define N_TRIES   8
+    // NOT USED !!!
+    #define N_TRIES   (-1)
 
     /* how many iterations for each T? */
-    #define ITERS_FIXED_T 2
+    #define ITERS_FIXED_T 16
 
     /* max step size in random walk */
-    #define STEP_SIZE 1.0
+    #define STEP_SIZE 0.1
 
     /* Boltzmann constant */
     #define K 1.0
@@ -463,9 +485,8 @@ namespace mPatterns {
     #define T_INITIAL 1.0         
 
     /* damping factor for temperature */
-    #define MU_T 1.25
+    #define MU_T 1.05
     #define T_MIN 0.1
-    //2.0e-6
 
     gsl_siman_params_t param_siman
     = {N_TRIES, ITERS_FIXED_T, STEP_SIZE,
@@ -475,9 +496,17 @@ namespace mPatterns {
         float x,y,r;
     }annealing_xyr_prms;
 
+    // evaluate configuration
     double E1(void *xp)
     {
-        GSL_macTestState* pSt = gSt;        
+        glMutex.lock();
+                
+        App* pApp = App::get();
+        assert(pApp);
+        assert(pApp->getRenderer());
+        pApp->getRenderer()->makeCurrentContext();
+
+        GSL_macTestState* pSt = gSt;
         annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
         
         double res = pSt->evaluate_fXY_C1_C2_R(GSL_macTestState::testSimplex::getMode(),
@@ -486,32 +515,31 @@ namespace mPatterns {
                                                GSL_macTestState::testSimplex::getColor(1),
                                                x.r);
         
-        printf("at %.2f %.2f r=%.2f => %.2f\n",x.x,x.y,x.r,res);
+        //printf("at %.2f %.2f r=%.2f => %.2f\n",x.x,x.y,x.r,res);
+
+        glMutex.unlock();
+        //printf("E1 unlocked\n");
         
         return res;
     }
 
     #define SIMAN_X_SCALE getWindowWidth()*1.f
     #define SIMAN_Y_SCALE getWindowHeight()*1.f
-    #define SIMAN_R_SCALE 96.0
+    #define SIMAN_R_SCALE 64.0
 
     // distance between 2 configurations
     double M1(void *xp, void *yp)
     {
-        annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
-        annealing_xyr_prms y = *((annealing_xyr_prms*)yp);
-        return      fabs(x.x - y.x)/SIMAN_X_SCALE
-                +   fabs(x.y - y.y)/SIMAN_Y_SCALE
-                +   fabs(x.r - y.r)/SIMAN_R_SCALE;
+        return 0; // not used
     }
-
-/*    bool isInRange(float x, float min, float max) {
-        
-    }*/
     
     float randomMove(const gsl_rng * r, double x, double step_size, double magnitude) {
         double v = gsl_rng_uniform(r);
-        return (v * 2.f * step_size - step_size) * magnitude + x;        
+        double newX = (v * 2.f * step_size - step_size) * magnitude + x;
+        if (newX<0)
+            newX += magnitude;
+        newX = fmod(newX, magnitude);
+        return newX;
     }
     
     // take a randon step of size step_size
@@ -519,31 +547,13 @@ namespace mPatterns {
     {
         annealing_xyr_prms old_x = *((annealing_xyr_prms*)xp);
         annealing_xyr_prms new_x;
-        
-        randomMove(r, old_x.x, step_size, SIMAN_X_SCALE);
-        randomMove(r, old_x.y, step_size, SIMAN_Y_SCALE);
-        
-        do
-        {
-            double u = gsl_rng_uniform(r);
-            double v = gsl_rng_uniform(r);
-            new_x.x = (u * 2.f * step_size - step_size) * SIMAN_X_SCALE + old_x.x;
-            new_x.y = (v * 2.f * step_size - step_size) * SIMAN_Y_SCALE + old_x.y;
-        }while (    !(new_x.x>0 && new_x.x<SIMAN_X_SCALE) 
-                ||  !(new_x.y>0 && new_x.y<SIMAN_Y_SCALE) );
-        
-        double w = gsl_rng_uniform(r);
-        
-        do {
-            float dr = (w * 2.f * step_size - step_size) * SIMAN_R_SCALE;
-            new_x.r = dr + old_x.r;            
-        }while (new_x.r<0);
-        
-        //printf (" step step_size=%.2f dr=%.2f\n",step_size,dr);
-        
+        new_x.x = randomMove(r, old_x.x, step_size, SIMAN_X_SCALE);
+        new_x.y = randomMove(r, old_x.y, step_size, SIMAN_Y_SCALE);
+        new_x.r = randomMove(r, old_x.r, step_size, SIMAN_R_SCALE);        
         memcpy(xp, &new_x, sizeof(new_x));
     }
 
+    // print func
     void P1(void *xp)
     {
         annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
@@ -563,6 +573,7 @@ namespace mPatterns {
         printf("******** START AT at %.2f %.2f r=%.2f\n",fx,fy,fr);
         
         gsl_rng_env_setup();
+        gsl_rng_default_seed = 1;
         
         T = gsl_rng_default;
         r = gsl_rng_alloc(T);
@@ -571,6 +582,9 @@ namespace mPatterns {
                         NULL, NULL, NULL, 
                         sizeof(annealing_xyr_prms), param_siman);
         
+        printf("******** test_annealing finished\n");
+        E1(&x_initial);
+        P1(&x_initial);        
         gsl_rng_free (r);
     }
 };

@@ -43,6 +43,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../../gsl-1.15;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -61,8 +62,8 @@
       <AdditionalIncludeDirectories>..\..\..\cinder_master\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\cinder_0.8.4_vc2010\lib;..\..\..\cinder_0.8.4_vc2010\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cblas.lib;gsl.lib;cinder_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\gsl-1.15\build.vc10\lib\Win32\Debug;..\..\..\cinder_0.8.4_vc2010\lib;..\..\..\cinder_0.8.4_vc2010\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -108,6 +109,9 @@
     <ClCompile Include="..\src\BaseCircleApp.cpp" />
     <ClCompile Include="..\src\Circle.cpp" />
     <ClCompile Include="..\src\Circles7.cpp" />
+    <ClCompile Include="..\src\ColorAnimator.cpp" />
+    <ClCompile Include="..\src\GraphicAppState.cpp" />
+    <ClCompile Include="..\src\hasPickableNode.cpp" />
     <ClCompile Include="..\src\Node.cpp" />
     <ClCompile Include="..\src\NodeMngr.cpp" />
     <ClCompile Include="..\src\RootNode.cpp" />
@@ -115,16 +119,25 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\Style.cpp" />
+    <ClCompile Include="..\src\TwoCircles7State.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\AppState.h" />
     <ClInclude Include="..\include\Axis.h" />
     <ClInclude Include="..\include\Circle.h" />
     <ClInclude Include="..\include\Circles7.h" />
+    <ClInclude Include="..\include\ColorAnimator.h" />
+    <ClInclude Include="..\include\GraphicAppState.h" />
+    <ClInclude Include="..\include\Growth.h" />
+    <ClInclude Include="..\include\GSL_macTests.h" />
+    <ClInclude Include="..\include\hasPickableNode.h" />
+    <ClInclude Include="..\include\IMouseHandler.h" />
     <ClInclude Include="..\include\Node.h" />
     <ClInclude Include="..\include\NodeMngr.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\RootNode.h" />
     <ClInclude Include="..\include\Style.h" />
+    <ClInclude Include="..\include\TwoCircles7State.h" />
     <ClInclude Include="..\src\BaseCirclePCH.h" />
   </ItemGroup>
   <ItemGroup>

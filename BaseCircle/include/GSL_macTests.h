@@ -304,10 +304,6 @@ namespace mPatterns {
                     boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(1);
                     m_annealingThread->timed_join(timeout);
                     glMutex.lock();
-#ifdef WIN32
-					test = wglMakeCurrent(_WIN32_DEFAULT_DC, _WIN32_DEFAULT_CONTEXT);
-					err = GetLastError();
-#endif
                 }
                 else {
                     printf("**** Thread finished !!!\n");
@@ -316,6 +312,11 @@ namespace mPatterns {
                     //m_annealingThread = new thread(mySimpleProc(Rand::randFloat()*300));
                 }
             }
+
+#ifdef WIN32
+			test = wglMakeCurrent(_WIN32_DEFAULT_DC, _WIN32_DEFAULT_CONTEXT);
+			err = GetLastError();
+#endif
         };
         
         // ---------------------------
@@ -610,7 +611,8 @@ namespace mPatterns {
         printf("******** START AT at %.2f %.2f r=%.2f\n",fx,fy,fr);
         
         gsl_rng_env_setup();
-        gsl_rng_default_seed = 1;
+
+        gsl_rng_default_seed = clock();
         
         T = gsl_rng_default;
         r = gsl_rng_alloc(T);

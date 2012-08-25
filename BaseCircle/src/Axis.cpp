@@ -21,8 +21,8 @@ void Axis::draw() const
     
     glLineWidth( getStyle()->mStroke );
     const float LONG_DIST = 5000.f;
-    gl::drawLine(	mpParent->mPosWorld - mDir*LONG_DIST, 
-                 mpParent->mPosWorld + mDir*LONG_DIST);
+//    gl::drawLine(	mpParent->mPosWorld - mDir*LONG_DIST, 
+//                  mpParent->mPosWorld + mDir*LONG_DIST);
     glLineWidth( 1.0f );
 }
         

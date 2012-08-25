@@ -38,7 +38,7 @@ namespace mPatterns {
         Circles7* m_pCircle;
         gl::Fbo mFbo;
         gl::Fbo mReferenceFbo;
-        unsigned char *mRefData_RGB;
+        unsigned char *mRefData_RGBA;
         //Vec2f mCurPos;
         bool mFirstTime;
         
@@ -53,23 +53,15 @@ namespace mPatterns {
             
             gl::Fbo::Format format;
             format.setSamples( 4 );
+            format.setColorInternalFormat( GL_RGBA8 );
             mFbo = gl::Fbo(_SCREEN_SIZE, format );  
             
             mFirstTime = true;
             mDone = false;            
         };
         
-/*        ~GSL_macTestState() {
-            deInit();
-        }*/
-        
         virtual void deInit() {
-            printf("deInit, unlock glmutex\n");
             glMutex.unlock();
-        };
-        
-        virtual void update(float fDt) {
-//            GraphicAppState::postUpdate();
         };
       
         void renderToFbo(gl::Fbo &fbo, float posX, float posY, ColorAf c1, ColorAf c2, float r) {
@@ -105,19 +97,24 @@ namespace mPatterns {
             gl::draw(fbo.getTexture());            
         }
         
-        static void getFboData_RGB(gl::Fbo &fbo, unsigned char *destRGB) {
+        static void getFboData_RGBA(gl::Fbo &fbo, void* destRGBA) {
             gl::Texture texFbo = fbo.getTexture();
             texFbo.bind();
                 glPixelStorei( GL_PACK_ALIGNMENT, 1 );
-                glGetTexImage( texFbo.getTarget(), 0, GL_RGB, GL_UNSIGNED_BYTE, destRGB );
-            texFbo.unbind();            
+                glGetTexImage( texFbo.getTarget(), 0, GL_RGBA, GL_UNSIGNED_BYTE, destRGBA );
+                GLenum err = glGetError();
+                if (err!=GL_NO_ERROR)
+                    printf("err=%x\n",err);
+            texFbo.unbind();
         }
         
         ColorAf mC1,mC2;
         
         void initRefImage() {
             gl::Fbo::Format format;
+            
             format.setSamples( 4 );
+            format.setColorInternalFormat( GL_RGBA8 );
             mReferenceFbo = gl::Fbo(_SCREEN_SIZE, format );
             
             vector<PrimitiveStylePtr>& styles = m_pCircle->mStyles;
@@ -127,8 +124,28 @@ namespace mPatterns {
             testSimplex::setStartRadius(r);
             renderToFbo(mReferenceFbo, _SCREEN_CENTER, mC1, mC2, r);
             
-            mRefData_RGB = new unsigned char[getWindowWidth()*getWindowHeight()*3];
-            getFboData_RGB(mReferenceFbo, mRefData_RGB);
+            mRefData_RGBA = new unsigned char[getWindowWidth()*getWindowHeight()*4];
+           getFboData_RGBA(mReferenceFbo, mRefData_RGBA);
+        }
+        
+        #define GET_R(c) ((c&0xFF000000)>>24) 
+        #define GET_G(c) ((c&0x00FF0000)>>16) 
+        #define GET_B(c) ((c&0x0000FF00)>>8) 
+        
+        typedef unsigned int u32;
+        typedef int s32;
+        
+        inline float fastFitness(u32 s, u32 r) {
+            s32 lumS = (GET_R(s)+GET_G(s)+GET_B(s))/3;
+            s32 lumR = (GET_R(r)+GET_G(r)+GET_B(r))/3;
+            //printf("s=%x\n",lumS);
+            float diff = lumS-lumR;
+            
+            // more sample than ref, this is bad
+            if (diff>0)
+                return diff/64.f;
+            else
+                return -diff;
         }
         
         float fitness(float sample, float ref) {
@@ -157,27 +174,39 @@ namespace mPatterns {
         }
         
         float evaluate_fXY_C1_C2_R(int evalMode, Vec2f pos, ColorAf c1, ColorAf c2,float r) {
-            renderToFbo(mFbo, pos.x, pos.y, c1, c2, r);
-            
-            unsigned char curSample[getWindowWidth()*getWindowHeight()*3];
-            getFboData_RGB(mFbo, curSample);
-            
-            float d = 0.f;
-            for (int i=0;i<getWindowWidth()*getWindowHeight();i++) {
-                int off = i*3;
-                Colorf ref(mRefData_RGB[off],mRefData_RGB[off+1],mRefData_RGB[off+2]);
-                Colorf sample(curSample[off],curSample[off+1],curSample[off+2]);
-                if (evalMode == EVAL_LUM)
-                    d += d_lum(sample, ref);
-                else
-                    d += d_tone(sample, ref);
-            }
+
+            mFrameTimer.start();
+                renderToFbo(mFbo, pos.x, pos.y, c1, c2, r);
+                mFrameTimer.stop();
+            float dt = mFrameTimer.getSeconds();
+            printf("renderToFbo dt=%.4fms\n", dt*1000.f);
+
+            mFrameTimer.start();
+                int nbPixels = getWindowWidth()*getWindowHeight();
+                static unsigned char *curSample = 0;
+                if (!curSample)
+                    curSample = new unsigned char[nbPixels*4];
+                getFboData_RGBA(mFbo, curSample);
+            dt = mFrameTimer.getSeconds();
+            printf("getFboData_RGBA dt=%.4fms\n", dt*1000.f);
+                        
+            mFrameTimer.start();
+                float d = 0.f;
+                u32* pRef = (u32*)mRefData_RGBA;
+                u32* pSample = (u32*)curSample;            
+                for (int i=0;i<nbPixels;i++) {
+                    d += fastFitness(pSample[i], pRef[i]);                    
+                }
+                //delete [] curSample;
+            dt = mFrameTimer.getSeconds();
+            printf("rate dt=%.4fms d=%.4f\n", dt*1000.f, d);
             
 /*            printf("d=%.3f %.2f,%.2f C1=%.2f,%.2f,%.2f C2=%.2f,%.2f,%.2f\n", 
                     d, pos.x, pos.y, 
                     c1.r, c1.g, c1.b, 
                     c2.r, c2.g, c2.b);*/
             
+
             return d;
         }
         
@@ -188,15 +217,14 @@ namespace mPatterns {
         virtual void mouseDown( MouseEvent event ) {
             Vec2f clickPos = event.getPos();
             clickPos.y = getWindowHeight()-1-clickPos.y;  
-//            test_annealing(clickPos.x,clickPos.y,32.f);
             
-            delete pTs;
-            testSimplex::setLumMode();
-            testSimplex::setStartPos(clickPos);
-            testSimplex::setStartRadius(Rand::randFloat()*32.f+4.f);
-            pTs = new testSimplex(this);
-            
-            mDone = false;
+            // -- simplex
+            //delete pTs;
+            //testSimplex::setLumMode();
+            //testSimplex::setStartPos(clickPos);
+            //testSimplex::setStartRadius(Rand::randFloat()*32.f+4.f);
+            //pTs = new testSimplex(this);
+            //mDone = false;
         }
         
         Timer mFrameTimer;
@@ -209,51 +237,40 @@ namespace mPatterns {
             }
             
             void operator()() {
-               /* for (int i=0;i<_nbTimes;i++) {
-                    boost::posix_time::milliseconds duration(100);
-                    printf("*** mySimpleProc %03d\n", i);
-                    boost::this_thread::sleep(duration);                    
-                }*/
-                
+                App::get()->getRenderer()->makeCurrentContext();
                 test_annealing(0,0,32.f);
             }
         };
         
         thread* m_annealingThread;
-        
-        virtual void draw() 
-        {
-            //printf("one frame ...\n");
-
+        virtual void update(float fDt) {
             // must init ref image at first frame            
             if (mFirstTime) {
                 testSimplex::initGPrms();  
                 initRefImage();
-                // pTs = new testSimplex(this);
                 mFirstTime = false;
-                
-                // test_annealing(0,0,32.f);
-            
-                //printf("*** create thread\n");
+
+                // -- simplex
+                // pTs = new testSimplex(this);
+
+                // -- annealing
                 glMutex.lock();
                 m_annealingThread = 0;
                 m_annealingThread = new thread(annealingProc());
             }
+        };
+        
+        virtual void draw() 
+        {
+            if (mFirstTime) {
+                GraphicAppState::preDraw();
+                GraphicAppState::postDraw(true);
+                return;
+            }
             
-            //printf("main unlock\n");
-            glMutex.unlock();
-            
-            //mFrameTimer.stop();
-            //float dt = mFrameTimer.getSeconds();
-            //printf("dt=%.2f\n", dt);
-            //mFrameTimer.start();
-            
-            glMutex.lock();
-            //printf("main is drawing...\n");
-
             GraphicAppState::preDraw();
             {
-                
+                // -- simplex
 /*                if (!mDone) {
                     for (int i=0;i<1;i++) {
                         mStepTimer.start();
@@ -273,12 +290,10 @@ namespace mPatterns {
             }
             GraphicAppState::postDraw(false);
             glMutex.unlock();
-            //printf("main finished drawing...\n");
                         
             if (m_annealingThread) {
                 if (m_annealingThread->joinable()) {
-                    //printf("main waiting...\n");
-                    boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(1);
+                    boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(0);
                     m_annealingThread->timed_join(timeout);
                     glMutex.lock();
                 }
@@ -286,7 +301,6 @@ namespace mPatterns {
                     printf("**** Thread finished !!!\n");
                     delete m_annealingThread;
                     m_annealingThread = 0;                    
-                    //m_annealingThread = new thread(mySimpleProc(Rand::randFloat()*300));
                 }
             }
         };
@@ -476,7 +490,7 @@ namespace mPatterns {
     #define ITERS_FIXED_T 16
 
     /* max step size in random walk */
-    #define STEP_SIZE 0.1
+    #define STEP_SIZE 0.15
 
     /* Boltzmann constant */
     #define K 1.0
@@ -501,11 +515,6 @@ namespace mPatterns {
     {
         glMutex.lock();
                 
-        App* pApp = App::get();
-        assert(pApp);
-        assert(pApp->getRenderer());
-        pApp->getRenderer()->makeCurrentContext();
-
         GSL_macTestState* pSt = gSt;
         annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
         
@@ -573,7 +582,7 @@ namespace mPatterns {
         printf("******** START AT at %.2f %.2f r=%.2f\n",fx,fy,fr);
         
         gsl_rng_env_setup();
-        gsl_rng_default_seed = 1;
+        gsl_rng_default_seed = clock();
         
         T = gsl_rng_default;
         r = gsl_rng_alloc(T);

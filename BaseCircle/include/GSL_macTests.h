@@ -1,8 +1,6 @@
 #include "cinder/rand.h"
 #include "cinder/gl/texture.h"
 #include "cinder/timer.h"
-#include "cinder/Thread.h"
-#include <boost/thread/mutex.hpp>
 
 #include <stdio.h>
 #include <gsl/gsl_sf_bessel.h>
@@ -14,6 +12,8 @@
 #define _SCREEN_CENTER_VEC2F Vec2f(getWindowWidth()/2,getWindowHeight()/2)
 
 #include "cinder/gl/Fbo.h"
+
+#include "contextMngr.h"
 
 namespace mPatterns {
     DECL_SHARED_PTR(GSL_macTestState)
@@ -28,9 +28,7 @@ namespace mPatterns {
     void test_annealing(float fx, float fy, float fr=32.f);
     
     class GSL_macTestState;
-    GSL_macTestState* gSt;
-    
-    mutex glMutex;
+    GSL_macTestState* gSt;        
 
     class GSL_macTestState : public GraphicAppState {
         
@@ -61,7 +59,7 @@ namespace mPatterns {
         };
         
         virtual void deInit() {
-            glMutex.unlock();
+            contextMngr::unlockMain();
         };
       
         void renderToFbo(gl::Fbo &fbo, float posX, float posY, ColorAf c1, ColorAf c2, float r) {
@@ -234,10 +232,11 @@ namespace mPatterns {
         {
         public:            
             annealingProc() {
+                
             }
             
             void operator()() {
-                App::get()->getRenderer()->makeCurrentContext();
+                contextMngr::setMainAsCurrent();
                 test_annealing(0,0,32.f);
             }
         };
@@ -254,7 +253,7 @@ namespace mPatterns {
                 // pTs = new testSimplex(this);
 
                 // -- annealing
-                glMutex.lock();
+                contextMngr::lockMain();
                 m_annealingThread = 0;
                 m_annealingThread = new thread(annealingProc());
             }
@@ -289,13 +288,13 @@ namespace mPatterns {
                 gl::disableAlphaBlending();
             }
             GraphicAppState::postDraw(false);
-            glMutex.unlock();
+            contextMngr::unlockMain();
                         
             if (m_annealingThread) {
                 if (m_annealingThread->joinable()) {
                     boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(0);
                     m_annealingThread->timed_join(timeout);
-                    glMutex.lock();
+                    contextMngr::lockMain();
                 }
                 else {
                     printf("**** Thread finished !!!\n");
@@ -513,7 +512,7 @@ namespace mPatterns {
     // evaluate configuration
     double E1(void *xp)
     {
-        glMutex.lock();
+        contextMngr::lockMain();
                 
         GSL_macTestState* pSt = gSt;
         annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
@@ -526,7 +525,7 @@ namespace mPatterns {
         
         //printf("at %.2f %.2f r=%.2f => %.2f\n",x.x,x.y,x.r,res);
 
-        glMutex.unlock();
+        contextMngr::unlockMain();
         //printf("E1 unlocked\n");
         
         return res;

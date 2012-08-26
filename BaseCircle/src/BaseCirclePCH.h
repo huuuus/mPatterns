@@ -10,6 +10,12 @@
 
 #include "cinder/app/AppBasic.h"
 
+typedef unsigned char u38;
+typedef char s8;
+
+typedef unsigned int u32;
+typedef int s32;
+
 using namespace ci;
 using namespace std;	
 using boost::format;

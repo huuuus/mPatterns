@@ -171,9 +171,9 @@ namespace mPatterns {
         virtual void doCrystalGrowth() {
 			float rootRadius = GETF("rootRadius");
             mpRootCrystal = new GrowthableCircle7(rootRadius, NODE_MGR.mpRoot);
-            mpRootCrystal->mPos = Vec2f(getWindowWidth()/2,getWindowHeight()/2);
+            mpRootCrystal->mPos = Vec2f((float)getWindowWidth()/2.f,(float)getWindowHeight()/2);
 
-			int cnt = GETF("nbChilds");
+			int cnt = (int)GETF("nbChilds");
             for (int i=0;i<cnt;i++) {
                 mpRootCrystal->childAtAngle(
 					Rand::randFloat(rootRadius * GETF("childMinRadiusFactor"), 

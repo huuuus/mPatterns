@@ -1,5 +1,4 @@
-#ifndef mPatternsMac_fboTools_h
-#define mPatternsMac_fboTools_h
+#pragma once
 
 void displayFbo(gl::Fbo &fbo, Color c = Color::white()) 
 {
@@ -18,16 +17,14 @@ void getFboData_RGBA(gl::Fbo &fbo, void* destRGBA) {
     texFbo.unbind();
 }
 
-void createFbo(int w, int h, GLenum glFormat, int nbSamples) {
+gl::Fbo createFbo(int w, int h, GLenum glFormat, int nbSamples) {
     gl::Fbo::Format format;
     format.setSamples( 4 );
     format.setColorInternalFormat( GL_RGBA8 );
-    mFbo = gl::Fbo(_SCREEN_SIZE, format );
+    return gl::Fbo(_SCREEN_SIZE, format );
 }
 
 void bindAndSetViewport(gl::Fbo &fbo) {
     fbo.bindFramebuffer();    
     gl::setViewport( fbo.getBounds() );
 }
-
-#endif

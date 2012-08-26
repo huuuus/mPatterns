@@ -66,7 +66,7 @@ const Vec2f SCREEN_SIZE(384,384);
 
 void BaseCircleApp::prepareSettings( Settings *settings ) 
 {
-	settings->setWindowSize( SCREEN_SIZE.x, SCREEN_SIZE.y );
+	settings->setWindowSize( (int)SCREEN_SIZE.x, (int)SCREEN_SIZE.y );
 	settings->setWindowPos( 64, 64 );
 	settings->setFullScreen( false );
 	settings->setResizable( true );

@@ -5,7 +5,8 @@
 
 #define _SCREEN_SIZE getWindowWidth(),getWindowHeight()
 #define _SCREEN_CENTER getWindowWidth()/2,getWindowHeight()/2
-#define _SCREEN_CENTER_VEC2F Vec2f(getWindowWidth()/2,getWindowHeight()/2)
+#define _SCREEN_CENTERF (float)getWindowWidth()/2.f,(float)getWindowHeight()/2.f
+#define _SCREEN_CENTER_VEC2F Vec2f((float)getWindowWidth()/2.f,(float)getWindowHeight()/2.f)
 
 namespace mPatterns {
     

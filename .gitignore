@@ -23,3 +23,5 @@ BaseCircle/vc10/ipch/
 *.ipch
 *.lastbuildstate
 *.bak
+*.cpp.orig
+*.h.orig

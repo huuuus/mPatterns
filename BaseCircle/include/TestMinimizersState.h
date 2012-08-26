@@ -11,12 +11,12 @@
 #include "fboTools.h"
 
 namespace mPatterns {
-    DECL_SHARED_PTR(GSL_macTestState)
+    DECL_SHARED_PTR(TestMinimizersState)
           
-    class GSL_macTestState;
-    GSL_macTestState* gSt;
+    class TestMinimizersState;
+    TestMinimizersState* gSt;
 
-    class GSL_macTestState : public GraphicAppState {
+    class TestMinimizersState : public GraphicAppState {
         
     public:
         Circles7* m_pCircle;

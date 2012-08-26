@@ -4,7 +4,7 @@
 #include "GraphicAppState.h"
 #include "TwoCircles7State.h"
 #include "Growth.h"
-#include "GSL_macTests.h"
+#include "TestMinimizersState.h"
 
 using namespace mPatterns;
 using namespace std;
@@ -77,7 +77,7 @@ void BaseCircleApp::setup()
 {
     mStates["TWO_CIRCLES_7"] = TwoCircles7StatePtr(new TwoCircles7State());
     mStates["GROWTH"] = GrowthStatePtr(new GrowthState());
-    mStates["GSL_MAC_TEST"] = GSL_macTestStatePtr(new GSL_macTestState());
+    mStates["GSL_MAC_TEST"] = TestMinimizersStatePtr(new TestMinimizersState());
     
     mpCurSt = getSt(initialState);
     mpCurSt->init();

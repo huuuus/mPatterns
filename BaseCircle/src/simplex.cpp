@@ -17,7 +17,7 @@
 //
 //testSimplex* pTs;
 //
-//GSL_macTestState::testSimplex::s_minimization_params GSL_macTestState::testSimplex::gMinPrms;
+//TestMinimizersState::testSimplex::s_minimization_params TestMinimizersState::testSimplex::gMinPrms;
 //
 //gsl_multimin_fminimizer *s; 
 //gsl_vector *ss, *x; 
@@ -25,7 +25,7 @@
 //
 //size_t iter; int status; double size;
 //
-//testSimplex(GSL_macTestState* param) {                
+//testSimplex(TestMinimizersState* param) {                
 //    iter = 0;
 //    
 //    /* Starting point */
@@ -169,7 +169,7 @@
 //        public:                                    
 //            static double my_fXY_C1_C2 (const gsl_vector *v, void *params) 
 //            {
-//                GSL_macTestState* pSt = (GSL_macTestState*)params;
+//                TestMinimizersState* pSt = (TestMinimizersState*)params;
 //                
 //                if (getMode()==EVAL_LUM) {
 //                    return pSt->evaluate_fXY_C1_C2_R(getMode(),

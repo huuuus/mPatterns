@@ -53,13 +53,13 @@
 //{
 //    contextMngr::lockMain();
 //    
-//    GSL_macTestState* pSt = gSt;
+//    TestMinimizersState* pSt = gSt;
 //    annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
 //    
-//    double res = pSt->evaluate_fXY_C1_C2_R(GSL_macTestState::testSimplex::getMode(),
+//    double res = pSt->evaluate_fXY_C1_C2_R(TestMinimizersState::testSimplex::getMode(),
 //                                           Vec2f(x.x,x.y),
-//                                           GSL_macTestState::testSimplex::getColor(0), 
-//                                           GSL_macTestState::testSimplex::getColor(1),
+//                                           TestMinimizersState::testSimplex::getColor(0), 
+//                                           TestMinimizersState::testSimplex::getColor(1),
 //                                           x.r);
 //    
 //    //printf("at %.2f %.2f r=%.2f => %.2f\n",x.x,x.y,x.r,res);

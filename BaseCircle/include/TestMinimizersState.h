@@ -38,7 +38,8 @@ namespace mPatterns {
             mFirstTime = true;
         };
                
-        virtual void deInit() {		
+        virtual void deInit() {	
+			delete [] mRefData_RGBA;
         }
       
         void renderToFbo(gl::Fbo &fbo, float posX, float posY, ColorAf c1, ColorAf c2, float r) {

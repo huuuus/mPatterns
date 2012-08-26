@@ -27,6 +27,7 @@ class BaseCircleApp : public AppBasic {
         printf("shutdown()\n");
         if (mpCurSt)
             mpCurSt->deInit();
+		contextMngr::deInit();
     }
     
 protected:

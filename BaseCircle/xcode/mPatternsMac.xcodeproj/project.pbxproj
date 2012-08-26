@@ -21,6 +21,9 @@
 		5757EE9315A2627A00E84402 /* ColorAnimator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5757EE9215A2627A00E84402 /* ColorAnimator.cpp */; };
 		576199CA15828B6100965F23 /* BaseCircleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576199C515828B6100965F23 /* BaseCircleApp.cpp */; };
 		576199CB15828B6100965F23 /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576199C615828B6100965F23 /* Circle.cpp */; };
+		5773830C15E95BD70081B3C0 /* simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5773830B15E95BD70081B3C0 /* simplex.cpp */; };
+		5773830F15E95C120081B3C0 /* sim_annealing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5773830E15E95C120081B3C0 /* sim_annealing.cpp */; };
+		5773831215E96FA80081B3C0 /* contextMngr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5773831115E96FA80081B3C0 /* contextMngr.cpp */; };
 		57875F4715AA058F004DBD5C /* GraphicAppState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57875F4415AA058F004DBD5C /* GraphicAppState.cpp */; };
 		57875F4815AA058F004DBD5C /* hasPickableNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57875F4515AA058F004DBD5C /* hasPickableNode.cpp */; };
 		57875F4C15AA0804004DBD5C /* TwoCircles7State.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57875F4B15AA0804004DBD5C /* TwoCircles7State.cpp */; };
@@ -56,6 +59,10 @@
 		5757EE9215A2627A00E84402 /* ColorAnimator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorAnimator.cpp; path = ../src/ColorAnimator.cpp; sourceTree = "<group>"; };
 		576199C515828B6100965F23 /* BaseCircleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseCircleApp.cpp; path = ../src/BaseCircleApp.cpp; sourceTree = "<group>"; };
 		576199C615828B6100965F23 /* Circle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Circle.cpp; path = ../src/Circle.cpp; sourceTree = "<group>"; };
+		5773830B15E95BD70081B3C0 /* simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = simplex.cpp; path = ../src/simplex.cpp; sourceTree = "<group>"; };
+		5773830E15E95C120081B3C0 /* sim_annealing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sim_annealing.cpp; path = ../src/sim_annealing.cpp; sourceTree = "<group>"; };
+		5773831015E95C910081B3C0 /* contextMngr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = contextMngr.h; path = ../include/contextMngr.h; sourceTree = "<group>"; };
+		5773831115E96FA80081B3C0 /* contextMngr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = contextMngr.cpp; path = ../src/contextMngr.cpp; sourceTree = "<group>"; };
 		57875F3E15AA04B2004DBD5C /* AppState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppState.h; path = ../include/AppState.h; sourceTree = "<group>"; };
 		57875F4115AA04DB004DBD5C /* hasPickableNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hasPickableNode.h; path = ../include/hasPickableNode.h; sourceTree = "<group>"; };
 		57875F4215AA04DB004DBD5C /* IMouseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMouseHandler.h; path = ../include/IMouseHandler.h; sourceTree = "<group>"; };
@@ -105,6 +112,8 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5773830B15E95BD70081B3C0 /* simplex.cpp */,
+				5773830E15E95C120081B3C0 /* sim_annealing.cpp */,
 				57875F4B15AA0804004DBD5C /* TwoCircles7State.cpp */,
 				57875F4415AA058F004DBD5C /* GraphicAppState.cpp */,
 				57875F4515AA058F004DBD5C /* hasPickableNode.cpp */,
@@ -174,6 +183,8 @@
 				57875F4A15AA07F5004DBD5C /* TwoCircles7State.h */,
 				57875F5515AA18A5004DBD5C /* Growth.h */,
 				57A40EBF15C559EE00344A56 /* GSL_macTests.h */,
+				5773831115E96FA80081B3C0 /* contextMngr.cpp */,
+				5773831015E95C910081B3C0 /* contextMngr.h */,
 				57875F4915AA06F1004DBD5C /* GraphicAppState.h */,
 				57875F4115AA04DB004DBD5C /* hasPickableNode.h */,
 				57875F4215AA04DB004DBD5C /* IMouseHandler.h */,
@@ -281,6 +292,9 @@
 				57875F4715AA058F004DBD5C /* GraphicAppState.cpp in Sources */,
 				57875F4815AA058F004DBD5C /* hasPickableNode.cpp in Sources */,
 				57875F4C15AA0804004DBD5C /* TwoCircles7State.cpp in Sources */,
+				5773830C15E95BD70081B3C0 /* simplex.cpp in Sources */,
+				5773830F15E95C120081B3C0 /* sim_annealing.cpp in Sources */,
+				5773831215E96FA80081B3C0 /* contextMngr.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

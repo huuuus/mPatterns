@@ -1,8 +1,9 @@
-#include "BaseCirclePCH.h"
+#include "baseCirclePCH.h"
 #include "cinder/params/Params.h"
 #include "cinder/gl/gl.h"
-#include "GraphicAppState.h"
-#include "ColorAnimator.h"
+#include "graphicAppState.h"
+#include "colorAnimator.h"
+#include "contextMngr.h"
 
 using namespace mPatterns;
 using namespace params;
@@ -16,6 +17,7 @@ void GraphicAppState::init() {
     mParams.setOptions("", (format("position='%d %d'") % 
                             (getWindowWidth()/96) % 
                             (getWindowHeight()/16)).str());
+	contextMngr::init();	
 }
 
 void GraphicAppState::mouseUp( MouseEvent event )

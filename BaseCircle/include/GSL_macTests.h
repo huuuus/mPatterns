@@ -2,9 +2,6 @@
 #include "cinder/gl/texture.h"
 #include "cinder/timer.h"
 
-#include "cinder/Thread.h"
-#include <boost/thread/mutex.hpp>
-
 #include <stdio.h>
 #include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_multimin.h>
@@ -15,6 +12,8 @@
 #define _SCREEN_CENTER_VEC2F Vec2f(getWindowWidth()/2,getWindowHeight()/2)
 
 #include "cinder/gl/Fbo.h"
+
+#include "contextMngr.h"
 
 namespace mPatterns {
     DECL_SHARED_PTR(GSL_macTestState)
@@ -29,14 +28,8 @@ namespace mPatterns {
     void test_annealing(float fx, float fy, float fr=32.f);
     
     class GSL_macTestState;
-    GSL_macTestState* gSt;
-    
-    mutex glMutex;	
+    GSL_macTestState* gSt;        
 
-#ifdef WIN32
-	HGLRC _WIN32_DEFAULT_CONTEXT;
-	HDC _WIN32_DEFAULT_DC;
-#endif
 
     class GSL_macTestState : public GraphicAppState {
         
@@ -65,13 +58,8 @@ namespace mPatterns {
             mFirstTime = true;
             mDone = false;            
         };
-        
-        ~GSL_macTestState() {
-            deInit();
-        }
-        
-        virtual void deInit() {
-            glMutex.unlock();
+               
+        virtual void deInit() {		
         }
       
         void renderToFbo(gl::Fbo &fbo, float posX, float posY, ColorAf c1, ColorAf c2, float r) {
@@ -183,8 +171,6 @@ namespace mPatterns {
             return abs(ref_HSV[1]-sample_HSV[1]) + abs(ref_HSV[0]-sample_HSV[0]);
         }
         
-		static unsigned char gEvalBuffer[2048*2048*3];
-
         float evaluate_fXY_C1_C2_R(int evalMode, Vec2f pos, ColorAf c1, ColorAf c2,float r) {
             mFrameTimer.start();
                 renderToFbo(mFbo, pos.x, pos.y, c1, c2, r);
@@ -239,29 +225,24 @@ namespace mPatterns {
         {
         public:            
             annealingProc() {
+                
             }
             
-            void operator()() {
-#ifdef WIN32
-#else
-                App::get()->getRenderer()->makeCurrentContext();
-#endif
+            void operator()() {                
                 test_annealing(0,0,32.f);
             }
         };
         
         thread* m_annealingThread;
+
         virtual void update(float fDt) {
             // must init ref image at first frame            
             if (mFirstTime) {
                 testSimplex::initGPrms();  
                 initRefImage();
                 mFirstTime = false;           
-#ifdef WIN32
-				_WIN32_DEFAULT_CONTEXT = wglGetCurrentContext();
-				_WIN32_DEFAULT_DC = wglGetCurrentDC();
-#endif
-                glMutex.lock();
+                
+				contextMngr::lockMain();
                 m_annealingThread = 0;
                 m_annealingThread = new thread(annealingProc());
             }
@@ -281,28 +262,21 @@ namespace mPatterns {
 			}
 			GraphicAppState::postDraw(false);
 
-#ifdef WIN32
-			wglMakeCurrent(NULL, NULL);
-#endif
-            glMutex.unlock();
-                        
-            if (m_annealingThread) {
-                if (m_annealingThread->joinable()) {
-                    boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(0);
-                    m_annealingThread->timed_join(timeout);                    
-                }
-                else {
-                    printf("**** Thread finished !!!\n");
-                    delete m_annealingThread;
-                    m_annealingThread = 0;                    
-                }
-            }
+            contextMngr::unlockMain();
 
-			glMutex.lock();
-#ifdef WIN32			
-			wglMakeCurrent(_WIN32_DEFAULT_DC, _WIN32_DEFAULT_CONTEXT);
-			GetLastError();
-#endif
+				if (m_annealingThread) {
+					if (m_annealingThread->joinable()) {
+						boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(0);
+						m_annealingThread->timed_join(timeout);
+					}
+					else {
+						printf("**** Thread finished !!!\n");
+						delete m_annealingThread;
+						m_annealingThread = 0;                    
+					}
+				}
+
+			contextMngr::lockMain();
         };
         
         // ---------------------------
@@ -513,37 +487,18 @@ namespace mPatterns {
     // evaluate configuration
     double E1(void *xp)
     {
-        glMutex.lock();
-                
-        App* pApp = App::get();
-        assert(pApp);
-        assert(pApp->getRenderer());
+        contextMngr::lockMain();              
 
-#ifdef WIN32
-		BOOL test = wglMakeCurrent(_WIN32_DEFAULT_DC, _WIN32_DEFAULT_CONTEXT);
-		DWORD err = GetLastError();
-#else
-        pApp->getRenderer()->makeCurrentContext();
-#endif
+			GSL_macTestState* pSt = gSt;
+			annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
+        
+			double res = pSt->evaluate_fXY_C1_C2_R(GSL_macTestState::testSimplex::getMode(),
+												   Vec2f(x.x,x.y),
+												   GSL_macTestState::testSimplex::getColor(0), 
+												   GSL_macTestState::testSimplex::getColor(1),
+												   x.r);
 
-        GSL_macTestState* pSt = gSt;
-        annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
-        
-        double res = pSt->evaluate_fXY_C1_C2_R(GSL_macTestState::testSimplex::getMode(),
-                                               Vec2f(x.x,x.y),
-                                               GSL_macTestState::testSimplex::getColor(0), 
-                                               GSL_macTestState::testSimplex::getColor(1),
-                                               x.r);
-        
-        //printf("at %.2f %.2f r=%.2f => %.2f\n",x.x,x.y,x.r,res);
-
-#ifdef WIN32
-		test = wglMakeCurrent(NULL, NULL);
-		err = GetLastError();
-#endif
-        glMutex.unlock();
-        //printf("E1 unlocked\n");
-        
+        contextMngr::unlockMain();        
         return res;
     }
 
@@ -611,5 +566,5 @@ namespace mPatterns {
         P1(&x_initial);        
         gsl_rng_free (r);
     }
-	unsigned char GSL_macTestState::gEvalBuffer[2048*2048*3];
+	//unsigned char GSL_macTestState::gEvalBuffer[2048*2048*3];
 };

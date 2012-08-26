@@ -1,6 +1,7 @@
 #include "cinder/rand.h"
 #include "cinder/gl/texture.h"
 #include "cinder/timer.h"
+
 #include "cinder/Thread.h"
 #include <boost/thread/mutex.hpp>
 
@@ -30,7 +31,12 @@ namespace mPatterns {
     class GSL_macTestState;
     GSL_macTestState* gSt;
     
-    mutex glMutex;
+    mutex glMutex;	
+
+#ifdef WIN32
+	HGLRC _WIN32_DEFAULT_CONTEXT;
+	HDC _WIN32_DEFAULT_DC;
+#endif
 
     class GSL_macTestState : public GraphicAppState {
         
@@ -60,9 +66,13 @@ namespace mPatterns {
             mDone = false;            
         };
         
+        ~GSL_macTestState() {
+            deInit();
+        }
+        
         virtual void deInit() {
             glMutex.unlock();
-        };
+        }
       
         void renderToFbo(gl::Fbo &fbo, float posX, float posY, ColorAf c1, ColorAf c2, float r) {
             gl::SaveFramebufferBinding bindingSaver;
@@ -89,7 +99,7 @@ namespace mPatterns {
                 NODE_MGR.updateNodes(); 
                 NODE_MGR.draw();             
             gl::disableAlphaBlending();
-        };
+		}
         
         void displayFbo(gl::Fbo &fbo, Color c = Color::white()) 
         {
@@ -173,8 +183,9 @@ namespace mPatterns {
             return abs(ref_HSV[1]-sample_HSV[1]) + abs(ref_HSV[0]-sample_HSV[0]);
         }
         
-        float evaluate_fXY_C1_C2_R(int evalMode, Vec2f pos, ColorAf c1, ColorAf c2,float r) {
+		static unsigned char gEvalBuffer[2048*2048*3];
 
+        float evaluate_fXY_C1_C2_R(int evalMode, Vec2f pos, ColorAf c1, ColorAf c2,float r) {
             mFrameTimer.start();
                 renderToFbo(mFbo, pos.x, pos.y, c1, c2, r);
                 mFrameTimer.stop();
@@ -200,12 +211,6 @@ namespace mPatterns {
                 //delete [] curSample;
             dt = mFrameTimer.getSeconds();
             printf("rate dt=%.4fms d=%.4f\n", dt*1000.f, d);
-            
-/*            printf("d=%.3f %.2f,%.2f C1=%.2f,%.2f,%.2f C2=%.2f,%.2f,%.2f\n", 
-                    d, pos.x, pos.y, 
-                    c1.r, c1.g, c1.b, 
-                    c2.r, c2.g, c2.b);*/
-            
 
             return d;
         }
@@ -237,7 +242,10 @@ namespace mPatterns {
             }
             
             void operator()() {
+#ifdef WIN32
+#else
                 App::get()->getRenderer()->makeCurrentContext();
+#endif
                 test_annealing(0,0,32.f);
             }
         };
@@ -248,12 +256,11 @@ namespace mPatterns {
             if (mFirstTime) {
                 testSimplex::initGPrms();  
                 initRefImage();
-                mFirstTime = false;
-
-                // -- simplex
-                // pTs = new testSimplex(this);
-
-                // -- annealing
+                mFirstTime = false;           
+#ifdef WIN32
+				_WIN32_DEFAULT_CONTEXT = wglGetCurrentContext();
+				_WIN32_DEFAULT_DC = wglGetCurrentDC();
+#endif
                 glMutex.lock();
                 m_annealingThread = 0;
                 m_annealingThread = new thread(annealingProc());
@@ -262,40 +269,27 @@ namespace mPatterns {
         
         virtual void draw() 
         {
-            if (mFirstTime) {
-                GraphicAppState::preDraw();
-                GraphicAppState::postDraw(true);
-                return;
-            }
-            
-            GraphicAppState::preDraw();
-            {
-                // -- simplex
-/*                if (!mDone) {
-                    for (int i=0;i<1;i++) {
-                        mStepTimer.start();
-                            mDone = pTs->doOneStep(); 
-                        mStepTimer.stop(); 
-                        printf(" step time=%.2f\n", mStepTimer.getSeconds());
-                    }                                           
-                }*/
-                
-                displayFbo(mReferenceFbo, Color(0.5,0.5,0.5));
+			GraphicAppState::preDraw();
+			{
+				displayFbo(mReferenceFbo, Color(0.5,0.5,0.5));
                                 
-                gl::enableAdditiveBlending();
-                {
-                    displayFbo(mFbo);
-                }
-                gl::disableAlphaBlending();
-            }
-            GraphicAppState::postDraw(false);
+				gl::enableAdditiveBlending();
+				{
+					displayFbo(mFbo);
+				}
+				gl::disableAlphaBlending();
+			}
+			GraphicAppState::postDraw(false);
+
+#ifdef WIN32
+			wglMakeCurrent(NULL, NULL);
+#endif
             glMutex.unlock();
                         
             if (m_annealingThread) {
                 if (m_annealingThread->joinable()) {
                     boost::system_time const timeout = boost::get_system_time() + boost::posix_time::milliseconds(0);
-                    m_annealingThread->timed_join(timeout);
-                    glMutex.lock();
+                    m_annealingThread->timed_join(timeout);                    
                 }
                 else {
                     printf("**** Thread finished !!!\n");
@@ -303,6 +297,12 @@ namespace mPatterns {
                     m_annealingThread = 0;                    
                 }
             }
+
+			glMutex.lock();
+#ifdef WIN32			
+			wglMakeCurrent(_WIN32_DEFAULT_DC, _WIN32_DEFAULT_CONTEXT);
+			GetLastError();
+#endif
         };
         
         // ---------------------------
@@ -359,7 +359,7 @@ namespace mPatterns {
                 return gMinPrms.startColors[i];
             }
 
-            static float setStartRadius(float r) {
+            static void setStartRadius(float r) {
                 gMinPrms.startRadius = r;
             }
             
@@ -386,7 +386,7 @@ namespace mPatterns {
             testSimplex(GSL_macTestState* param) {                
                 iter = 0;
                 
-                /* Starting point */
+                // Starting point 
                 gsl_vector *allParams = gsl_vector_alloc(PRM_NB);                 
                 gsl_vector_set (allParams, PRM_X, gMinPrms.startPos.x); 
                 gsl_vector_set (allParams, PRM_Y, gMinPrms.startPos.y);
@@ -402,7 +402,7 @@ namespace mPatterns {
                     gsl_vector_set(x, i, gsl_vector_get(allParams, i));
                 gsl_vector_free(allParams);
                 
-                /* Set initial step sizes */
+                // Set initial step sizes 
                 gsl_vector *all_ss = gsl_vector_alloc (PRM_NB);
                 for (int i=PRM_X;i<=PRM_Y;i++)
                     gsl_vector_set (all_ss, i, 256.0);
@@ -415,7 +415,7 @@ namespace mPatterns {
                     gsl_vector_set(ss, i, gsl_vector_get(all_ss, i));
                 gsl_vector_free(all_ss);
                 
-                /* Initialize method and minimizer */
+                // Initialize method and minimizer 
                 minex_func.n = gMinPrms.nbPrms;
                 minex_func.f = my_fXY_C1_C2; 
                 minex_func.params = param;
@@ -480,25 +480,25 @@ namespace mPatterns {
     
     GSL_macTestState::testSimplex::s_minimization_params GSL_macTestState::testSimplex::gMinPrms;
 
-    /* set up parameters for this simulated annealing run */
+    // set up parameters for this simulated annealing run
 
-    /* how many points do we try before stepping */
+    /// how many points do we try before stepping
     // NOT USED !!!
     #define N_TRIES   (-1)
 
-    /* how many iterations for each T? */
+    // how many iterations for each T?
     #define ITERS_FIXED_T 16
 
     /* max step size in random walk */
     #define STEP_SIZE 0.15
 
-    /* Boltzmann constant */
+    // Boltzmann constant 
     #define K 1.0
 
-    /* initial temperature */
+    // initial temperature 
     #define T_INITIAL 1.0         
 
-    /* damping factor for temperature */
+    // damping factor for temperature 
     #define MU_T 1.05
     #define T_MIN 0.1
 
@@ -515,6 +515,17 @@ namespace mPatterns {
     {
         glMutex.lock();
                 
+        App* pApp = App::get();
+        assert(pApp);
+        assert(pApp->getRenderer());
+
+#ifdef WIN32
+		BOOL test = wglMakeCurrent(_WIN32_DEFAULT_DC, _WIN32_DEFAULT_CONTEXT);
+		DWORD err = GetLastError();
+#else
+        pApp->getRenderer()->makeCurrentContext();
+#endif
+
         GSL_macTestState* pSt = gSt;
         annealing_xyr_prms x = *((annealing_xyr_prms*)xp);
         
@@ -526,6 +537,10 @@ namespace mPatterns {
         
         //printf("at %.2f %.2f r=%.2f => %.2f\n",x.x,x.y,x.r,res);
 
+#ifdef WIN32
+		test = wglMakeCurrent(NULL, NULL);
+		err = GetLastError();
+#endif
         glMutex.unlock();
         //printf("E1 unlocked\n");
         
@@ -596,74 +611,5 @@ namespace mPatterns {
         P1(&x_initial);        
         gsl_rng_free (r);
     }
+	unsigned char GSL_macTestState::gEvalBuffer[2048*2048*3];
 };
-
-
-
-
-
-
-
-
-
-/*
-double my_f (const gsl_vector *v, void *params) 
-{
-    double x, y;
-    double *p = (double *)params;
-    x = gsl_vector_get(v, 0); y = gsl_vector_get(v, 1);
-    return p[2] * (x - p[0]) * (x - p[0]) +
-    p[3] * (y - p[1]) * (y - p[1]) + p[4];
-}
-
-void test_simplex(void) 
-{    
-    double par[5] = {1.0, 2.0, 10.0, 20.0, 30.0};
-    
-    const gsl_multimin_fminimizer_type *T = gsl_multimin_fminimizer_nmsimplex2;
-    
-    gsl_multimin_fminimizer *s = NULL; 
-    gsl_vector *ss, *x; 
-    gsl_multimin_function minex_func;
-    
-    size_t iter = 0; int status; double size;
-    
-    // Starting point
-    x = gsl_vector_alloc (2); 
-    gsl_vector_set (x, 0, 5.0); 
-    gsl_vector_set (x, 1, 7.0);
-    
-    // Set initial step sizes to 1
-    ss = gsl_vector_alloc (2); 
-    gsl_vector_set_all (ss, 1.0);
-    
-    // Initialize method and iterate
-    minex_func.n = 2;
-    minex_func.f = my_f; 
-    minex_func.params = par;
-    
-    s = gsl_multimin_fminimizer_alloc (T, 2); 
-    gsl_multimin_fminimizer_set (s, &minex_func, x, ss);
-    do {
-        iter++;
-        
-        status = gsl_multimin_fminimizer_iterate(s);
-        if (status)
-            break;
-        
-        size = gsl_multimin_fminimizer_size (s); 
-        status = gsl_multimin_test_size (size, 1e-2);
-        
-        if (status == GSL_SUCCESS) {
-            printf ("converged to minimum at\n"); }
-        
-        printf ("%5d %10.3e %10.3e f() = %7.3f size = %.3f\n", iter,
-                gsl_vector_get (s->x, 0), gsl_vector_get (s->x, 1), s->fval, size);
-    }while (status == GSL_CONTINUE && iter < 100);
-    
-    gsl_vector_free(x); 
-    gsl_vector_free(ss); 
-    gsl_multimin_fminimizer_free (s);
-    
-    // return status;
-}*/

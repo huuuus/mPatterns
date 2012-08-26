@@ -3,6 +3,10 @@
 #include <assert.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/recursive_mutex.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/condition_variable.hpp>
 
 #include "cinder/app/AppBasic.h"
 
